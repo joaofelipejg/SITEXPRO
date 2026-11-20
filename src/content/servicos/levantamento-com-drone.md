@@ -19,13 +19,12 @@ comoFunciona:
   - "Realizamos o voo e a coleta das imagens."
   - "Processamos as imagens e geramos ortofoto, modelos e curvas de nível."
   - "Entregamos os produtos em formatos prontos para uso em CAD e SIG."
-prazo: "[PREENCHER: prazo médio do levantamento com drone]"
+prazo: ""
 entregaveis:
   - "Ortofoto georreferenciada"
   - "Modelo digital do terreno (MDT) e da superfície (MDS)"
   - "Curvas de nível e planta em CAD"
   - "Relatório técnico e ART"
-  - "[PREENCHER: outros entregáveis, se houver (ex.: nuvem de pontos, modelo 3D)]"
 faq:
   - pergunta: "O drone substitui o levantamento topográfico tradicional?"
     resposta: "Em muitos casos ele complementa. O drone é ideal para áreas abertas e grandes. Em locais com vegetação densa ou quando é preciso medir detalhes sob cobertura, combinamos o voo com medições em campo."

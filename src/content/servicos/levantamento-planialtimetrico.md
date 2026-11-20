@@ -18,13 +18,12 @@ comoFunciona:
   - "A equipe vai a campo com GNSS RTK e estação total e mede os pontos do terreno."
   - "No escritório, os dados são processados e representados em CAD, com cotas e curvas de nível."
   - "Você recebe a planta e os arquivos, com a responsabilidade técnica do profissional."
-prazo: "[PREENCHER: prazo médio do levantamento planialtimétrico]"
+prazo: ""
 entregaveis:
   - "Planta planialtimétrica em PDF, pronta para impressão"
   - "Arquivo em CAD (DWG) para o projetista"
   - "Curvas de nível e cotas dos pontos levantados"
   - "ART (Anotação de Responsabilidade Técnica)"
-  - "[PREENCHER: outros entregáveis, se houver (ex.: memorial, arquivo de pontos)]"
 faq:
   - pergunta: "Qual a diferença entre levantamento planimétrico e planialtimétrico?"
     resposta: "O planimétrico mede apenas as posições e distâncias no plano (área, divisas, construções). O planialtimétrico também mede as alturas, mostrando o relevo com cotas e curvas de nível, o que é necessário para a maioria dos projetos de engenharia."

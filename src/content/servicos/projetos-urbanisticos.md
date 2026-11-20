@@ -15,7 +15,7 @@ comoFunciona:
   - "Estudamos alternativas de parcelamento e aproveitamento da área."
   - "Desenvolvemos o projeto urbanístico e os projetos complementares necessários."
   - "Preparamos as pranchas e memoriais para a aprovação."
-prazo: "[PREENCHER: prazo médio do projeto urbanístico] O prazo de aprovação depende da prefeitura e dos órgãos envolvidos."
+prazo: ""
 entregaveis:
   - "Projeto urbanístico com quadras, lotes e vias"
   - "Quadro de áreas"

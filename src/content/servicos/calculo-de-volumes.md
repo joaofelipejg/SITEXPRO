@@ -16,7 +16,7 @@ comoFunciona:
   - "Levantamos a área com GNSS, estação total ou drone, conforme o tamanho."
   - "Calculamos os volumes com software de modelagem 3D."
   - "Entregamos o relatório com os volumes e as plantas."
-prazo: "[PREENCHER: prazo médio do cálculo de volumes]"
+prazo: ""
 entregaveis:
   - "Relatório de volumes (corte, aterro ou pilha)"
   - "Planta e seções do modelo calculado"

@@ -18,7 +18,7 @@ comoFunciona:
   - "Implantamos uma rede de pontos de referência no canteiro."
   - "Fazemos as locações e conferências nas etapas combinadas com a obra."
   - "Registramos as medições e enviamos os relatórios à equipe da obra."
-prazo: "[PREENCHER: como funciona a contratação (por visita, por etapa ou mensal)]"
+prazo: ""
 entregaveis:
   - "Locação de eixos, pilares e fundações em campo"
   - "Relatórios de conferência e de monitoramento"

@@ -16,7 +16,7 @@ comoFunciona:
   - "Definimos o traçado, a hierarquia e as seções das vias."
   - "Elaboramos o projeto geométrico, com planta e perfis."
   - "Entregamos as pranchas e o memorial do projeto."
-prazo: "[PREENCHER: prazo médio do projeto de sistema viário]"
+prazo: ""
 entregaveis:
   - "Planta do sistema viário"
   - "Perfis longitudinais e seções transversais"

@@ -16,7 +16,7 @@ comoFunciona:
   - "Levantamos os pontos do terreno em campo ou com drone."
   - "Geramos o modelo do terreno e as curvas em software especializado."
   - "Entregamos a planta com as curvas e os arquivos digitais."
-prazo: "[PREENCHER: prazo médio do levantamento de curvas de nível]"
+prazo: ""
 entregaveis:
   - "Planta com curvas de nível em PDF"
   - "Arquivo em CAD (DWG)"

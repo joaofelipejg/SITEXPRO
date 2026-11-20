@@ -17,7 +17,7 @@ comoFunciona:
   - "Estudamos alternativas de cotas para equilibrar os volumes."
   - "Definimos platôs, taludes e a drenagem associada."
   - "Entregamos plantas, seções, volumes e notas de serviço para a execução."
-prazo: "[PREENCHER: prazo médio do projeto de terraplenagem]"
+prazo: ""
 entregaveis:
   - "Planta de terraplenagem com platôs e taludes"
   - "Seções transversais"

@@ -16,7 +16,7 @@ comoFunciona:
   - "Fazemos os cálculos hidrológicos e hidráulicos."
   - "Projetamos o traçado e dimensionamos os dispositivos de drenagem."
   - "Entregamos plantas, perfis, detalhes e memorial de cálculo."
-prazo: "[PREENCHER: prazo médio do projeto de drenagem]"
+prazo: ""
 entregaveis:
   - "Plantas e perfis da rede de drenagem"
   - "Detalhes dos dispositivos"

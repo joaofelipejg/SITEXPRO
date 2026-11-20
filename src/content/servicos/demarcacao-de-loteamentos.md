@@ -16,7 +16,7 @@ comoFunciona:
   - "Locamos os eixos das ruas e os vértices das quadras."
   - "Demarcamos os lotes com marcos ou piquetes."
   - "Entregamos o relatório e a planta de conferência."
-prazo: "[PREENCHER: prazo médio da demarcação de loteamentos]"
+prazo: ""
 entregaveis:
   - "Quadras, lotes e eixos de vias marcados em campo"
   - "Planta de conferência da demarcação"

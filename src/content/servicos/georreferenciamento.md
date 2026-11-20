@@ -19,7 +19,7 @@ comoFunciona:
   - "Levantamos os vértices com GNSS de precisão, conforme a Norma Técnica do INCRA."
   - "Processamos os dados, preparamos as peças técnicas e submetemos ao SIGEF para certificação."
   - "Com a certificação, orientamos o registro da nova descrição no cartório de imóveis."
-prazo: "[PREENCHER: prazo médio do georreferenciamento] O prazo final também depende da análise do INCRA e do cartório."
+prazo: ""
 entregaveis:
   - "Planta e memorial descritivo georreferenciados"
   - "Certificação do perímetro no SIGEF/INCRA"

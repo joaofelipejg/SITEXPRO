@@ -16,7 +16,7 @@ comoFunciona:
   - "Fazemos o levantamento topográfico do imóvel."
   - "Elaboramos as plantas e os memoriais descritivos de cada parte."
   - "Acompanhamos a aprovação na prefeitura e orientamos o registro no cartório."
-prazo: "[PREENCHER: prazo médio do desmembramento/remembramento] O prazo final também depende da prefeitura e do cartório."
+prazo: ""
 entregaveis:
   - "Levantamento topográfico do imóvel"
   - "Plantas da situação atual e da proposta"

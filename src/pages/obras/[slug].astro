@@ -71,20 +71,27 @@ const outras = (await getCollection('obras'))
     </div>
   </section>
 
+  {/* Desafio, etapas e entregáveis só aparecem quando preenchidos no arquivo da obra */}
+  {(d.desafio || d.solucao.length > 0 || d.entregaveis.length > 0) && (
   <section class="secao secao-papel">
     <div class="wrap doc">
       <div>
+        {d.desafio && (
         <section class="doc-secao">
           <h2><span class="mono">01</span>O desafio</h2>
           <p set:html={marcar(d.desafio)} />
         </section>
+        )}
+        {d.solucao.length > 0 && (
         <section class="doc-secao">
-          <h2><span class="mono">02</span>O que fizemos</h2>
+          <h2><span class="mono">{d.desafio ? '02' : '01'}</span>O que fizemos</h2>
           <ol class="passos">
             {d.solucao.map((s) => <li><span set:html={marcar(s)} /></li>)}
           </ol>
         </section>
+        )}
       </div>
+      {d.entregaveis.length > 0 && (
       <aside class="lateral">
         <div class="caixa">
           <span class="caixa-rot">Entregáveis</span>
@@ -93,8 +100,10 @@ const outras = (await getCollection('obras'))
           </ul>
         </div>
       </aside>
+      )}
     </div>
   </section>
+  )}
 
   {outras.length > 0 && (
     <section class="secao">

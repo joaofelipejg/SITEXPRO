@@ -42,9 +42,9 @@ const obras = defineCollection({
     // true enquanto a obra tiver dados de exemplo: a página fica fora do Google.
     modelo: z.boolean().default(false),
     resumo: z.string(),
-    desafio: z.string(),
-    solucao: z.array(z.string()),
-    entregaveis: z.array(z.string()),
+    desafio: z.string().default(''),
+    solucao: z.array(z.string()).default([]),
+    entregaveis: z.array(z.string()).default([]),
     fotos: z.array(z.string()).default([]), // descrição de foto que ainda falta (vira espaço reservado)
   }),
 });

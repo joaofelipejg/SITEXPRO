@@ -30,4 +30,4 @@ Três obras modelo. Para cada obra real: preencha os campos, renomeie o arquivo
 
 ## Serviços — `src/content/servicos/*.md`
 - [x] Prazos retirados: o site informa que o prazo é definido no orçamento
-- [ ] Entregáveis extras do planialtimétrico e do drone (memorial, nuvem de pontos?)
+- [x] Entregáveis extras: itens provisórios retirados do site

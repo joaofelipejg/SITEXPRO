@@ -16,7 +16,7 @@ comoFunciona:
   - "Estudamos alternativas de traçado."
   - "Definimos eixo, curvas, greide e seções."
   - "Entregamos as pranchas e as notas de serviço."
-prazo: "[PREENCHER: prazo médio do projeto geométrico]"
+prazo: ""
 entregaveis:
   - "Planta do eixo com elementos de curva"
   - "Perfil longitudinal com greide"

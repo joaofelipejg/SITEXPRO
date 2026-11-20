@@ -16,7 +16,7 @@ comoFunciona:
   - "Implantamos os eixos principais e os pontos de apoio no canteiro."
   - "Locamos pilares, fundações e níveis, e conferimos as etapas críticas."
   - "Registramos as conferências em relatório."
-prazo: "[PREENCHER: prazo médio da locação de galpões]"
+prazo: ""
 entregaveis:
   - "Eixos e pontos locados em campo"
   - "Relatório de conferência"

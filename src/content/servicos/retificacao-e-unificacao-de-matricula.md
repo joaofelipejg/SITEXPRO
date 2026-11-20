@@ -17,7 +17,7 @@ comoFunciona:
   - "Fazemos o levantamento topográfico das divisas."
   - "Preparamos planta, memorial descritivo e as declarações dos confrontantes."
   - "Apoiamos o protocolo no cartório e respondemos às exigências técnicas."
-prazo: "[PREENCHER: prazo médio da retificação/unificação] O prazo final também depende do cartório."
+prazo: ""
 entregaveis:
   - "Levantamento topográfico do imóvel"
   - "Planta e memorial descritivo"

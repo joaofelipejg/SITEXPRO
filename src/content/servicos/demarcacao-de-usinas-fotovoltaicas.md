@@ -16,7 +16,7 @@ comoFunciona:
   - "Recebemos o projeto da usina e preparamos os dados de locação."
   - "Locamos as estacas e as estruturas com GNSS RTK."
   - "Conferimos alinhamento e cotas e registramos em relatório."
-prazo: "[PREENCHER: prazo médio da locação de usinas fotovoltaicas]"
+prazo: ""
 entregaveis:
   - "Levantamento topográfico da área"
   - "Estacas e estruturas locadas em campo"
