@@ -393,6 +393,11 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .campo input::placeholder, .campo textarea::placeholder { color: color-mix(in srgb, var(--sobre-azul-suave) 70%, transparent); }
 .form-pe { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; margin-top: 24px; }
 .form-pe small { color: var(--sobre-azul-suave); font-size: .85rem; max-width: 40ch; }
+/* Formulário de orçamento (envio por e-mail): aviso depois de abrir o e-mail, com o endereço para copiar */
+.form-status { flex-basis: 100%; margin: 0; padding: 12px 16px; font-size: .95rem; line-height: 1.5; border-left: 3px solid var(--amarelo); background: color-mix(in srgb, var(--amarelo) 12%, transparent); color: var(--sobre-azul); }
+.form-status a { color: inherit; text-decoration: underline; }
+.form-status button { font: inherit; font-size: .85rem; color: inherit; background: none; border: 1px solid currentColor; padding: 1px 8px; margin-left: 4px; cursor: pointer; }
+.form-claro .form-status { color: var(--tinta); }
 
 /* --- Chamada (CTA) ----------------------------------------------------- */
 .cta { background: var(--amarelo); color: var(--azul); padding-block: clamp(48px, 7vw, 88px); }
