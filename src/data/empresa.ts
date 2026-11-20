@@ -34,8 +34,9 @@ export const empresa = {
   raioKm: 150, // raio usual de atendimento a partir de Varginha
   cidadesAtendidas: ['Varginha', 'Pouso Alegre', 'Elói Mendes', 'Três Pontas', 'Três Corações', 'Campanha', 'Alfenas'],
   redes: {
-    instagram: 'https://www.instagram.com/xprolevantamentos/',
+    instagram: 'https://www.instagram.com/xpro.eng/',
     facebook: 'https://www.facebook.com/profile.php?id=61550524894635',
+    linkedin: 'https://br.linkedin.com/company/x-pro-projetos-e-levantamentos/',
   },
 };
 
