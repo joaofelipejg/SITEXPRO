@@ -1,0 +1,24 @@
+# Endereços antigos do WordPress -> páginas novas (Cloudflare Pages)
+# Mantém os links já indexados pelo Google funcionando.
+/dustra-service/levantamento-planialtimetrico-2/   /servicos/levantamento-planialtimetrico/          301
+/dustra-service/georreferenciamentos/              /servicos/georreferenciamento/                    301
+/dustra-service/drone/                             /servicos/levantamento-com-drone/                 301
+/dustra-service/acompanhamento-de-obras/           /servicos/acompanhamento-de-obras/                301
+/dustra-service/calculos-de-volume/                /servicos/calculo-de-volumes/                     301
+/dustra-service/curvas-de-nivel/                   /servicos/curvas-de-nivel/                        301
+/dustra-service/demarcacao-de-galpoes/             /servicos/demarcacao-de-galpoes/                  301
+/dustra-service/demarcacao-de-loteamentos/         /servicos/demarcacao-de-loteamentos/              301
+/dustra-service/demarcacao-de-usina-fotovoltaica/  /servicos/demarcacao-de-usinas-fotovoltaicas/     301
+/dustra-service/desmembramento-e-remembramento/    /servicos/desmembramento-e-remembramento/         301
+/dustra-service/retificacao-e-unificacao-de-matricula/ /servicos/retificacao-e-unificacao-de-matricula/ 301
+/dustra-service/projetos-de-drenagem/              /servicos/projetos-de-drenagem/                   301
+/dustra-service/projetos-de-sistema-viario/        /servicos/projetos-de-sistema-viario/             301
+/dustra-service/projetos-de-terraplanagem/         /servicos/projetos-de-terraplenagem/              301
+/dustra-service/projetos-geometricos/              /servicos/projetos-geometricos/                   301
+/dustra-service/projetos-urbanisticos/             /servicos/projetos-urbanisticos/                  301
+/dustra-service/*                                  /servicos/                                        301
+/sitemap.xml                                       /sitemap-index.xml                                301
+/wp-admin/*                                        /                                                 301
+/wp-content/*                                      /                                                 301
+/feed/*                                            /                                                 301
+/portfolio/                                        /obras/                                           301

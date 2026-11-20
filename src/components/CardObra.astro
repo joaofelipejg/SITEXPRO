@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Foto from './Foto.astro';
+import { marcar } from '../data/texto';
+
+interface Props {
+  obra: CollectionEntry<'obras'>;
+  indice: number;
+}
+
+const { obra, indice } = Astro.props;
+const d = obra.data;
+const capa = d.imagens[0];
+---
+<a class:list={['obra', `obra-${indice}`]} href={`/obras/${obra.id}/`}>
+  <div class="obra-topo"><span>Obra {String(indice).padStart(2, '0')}</span><span>{d.tipo}</span></div>
+  {capa
+    ? <Foto src={capa.src} alt={capa.alt} descricao={capa.alt} largura={900} foco={capa.foco} />
+    : <Foto descricao={d.fotos[0] ?? '[FOTO REAL: foto da obra]'} />}
+  <h3 set:html={marcar(d.titulo)} />
+  <dl class="ficha">
+    <div><dt>Cliente</dt><dd set:html={marcar(d.cliente)} /></div>
+    <div><dt>Cidade</dt><dd set:html={marcar(d.cidade)} /></div>
+  </dl>
+</a>

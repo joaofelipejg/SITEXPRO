@@ -1,0 +1,71 @@
+---
+// Formulário curto que monta a mensagem e abre o WhatsApp (não há servidor de e-mail).
+import { getCollection } from 'astro:content';
+import { empresa } from '../data/empresa';
+
+interface Props {
+  claro?: boolean;   // true = versão para fundo branco
+}
+
+const { claro = false } = Astro.props;
+const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
+const grupos = [
+  { nome: 'Topografia', itens: servicos.filter((s) => s.data.grupo === 'topografia') },
+  { nome: 'Projetos', itens: servicos.filter((s) => s.data.grupo === 'projetos') },
+];
+// Prefixo dos ids, para cada <label for> apontar para o seu campo
+const p = claro ? 'contato' : 'orcamento';
+// Na versão clara todos os campos têm exemplo; na escura, só os que já tinham
+const exemplo = (texto: string) => (claro ? texto : undefined);
+---
+<form class:list={['form', 'form-orcamento', { 'form-claro': claro }]} data-numero={empresa.whatsapp}>
+  <div class="campo">
+    <label for={`${p}-nome`}>Nome</label>
+    <input id={`${p}-nome`} name="nome" required autocomplete="name" placeholder={exemplo('Maria da Silva')}>
+  </div>
+  <div class="campo">
+    <label for={`${p}-telefone`}>Telefone / WhatsApp</label>
+    <input id={`${p}-telefone`} name="telefone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="(35) 9 0000-0000">
+  </div>
+  <div class="campo">
+    <label for={`${p}-cidade`}>Cidade do imóvel</label>
+    <input id={`${p}-cidade`} name="cidade" required autocomplete="address-level2" placeholder={exemplo('Varginha')}>
+  </div>
+  <div class="campo">
+    <label for={`${p}-servico`}>Tipo de serviço</label>
+    <select id={`${p}-servico`} name="servico" required>
+      <option value="">Selecione</option>
+      {grupos.map((g) => (
+        <optgroup label={g.nome}>
+          {g.itens.map((s) => <option>{s.data.titulo}</option>)}
+        </optgroup>
+      ))}
+      <option>Não sei qual serviço preciso</option>
+    </select>
+  </div>
+  <div class="campo campo-largo">
+    <label for={`${p}-mensagem`}>Mensagem</label>
+    <textarea id={`${p}-mensagem`} name="mensagem" rows="3" placeholder="Área aproximada, localização, para que precisa e prazo desejado."></textarea>
+  </div>
+  <div class="form-pe">
+    <button type="submit" class="btn-orcamento">Enviar pelo WhatsApp <span class="seta" aria-hidden="true">→</span></button>
+    <small>O WhatsApp abre com a mensagem pronta. Nada é enviado antes de você confirmar.</small>
+  </div>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('.form-orcamento').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(form);
+      const texto = [
+        `Olá! Meu nome é ${d.get('nome')}.`,
+        `Telefone: ${d.get('telefone')}`,
+        `Cidade do imóvel: ${d.get('cidade')}`,
+        `Serviço: ${d.get('servico')}`,
+        d.get('mensagem') ? `\n${d.get('mensagem')}` : '',
+      ].join('\n');
+      window.open(`https://wa.me/${form.dataset.numero}?text=${encodeURIComponent(texto)}`, '_blank', 'noopener');
+    });
+  });
+</script>

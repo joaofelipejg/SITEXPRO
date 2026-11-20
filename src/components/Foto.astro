@@ -1,0 +1,27 @@
+---
+// Foto real ou espaço reservado com a descrição da foto que deve entrar.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { marcar } from '../data/texto';
+
+interface Props {
+  src?: ImageMetadata;
+  alt?: string;
+  descricao: string;      // ex.: "[FOTO REAL: equipe em campo]"
+  largura?: number;
+  carregar?: 'lazy' | 'eager';
+  class?: string;
+  foco?: string;          // object-position da foto cortada, ex.: "50% 60%"
+}
+
+const { src, alt, descricao, largura = 900, carregar = 'lazy', class: classe = '', foco } = Astro.props;
+---
+{src ? (
+  <div class:list={['foto', 'foto-canto', classe]}>
+    <Image src={src} alt={alt ?? descricao} width={largura} loading={carregar} widths={[Math.round(largura / 2), largura]} sizes={`(max-width: 640px) 100vw, ${largura}px`} style={foco ? `object-position:${foco}` : undefined} />
+  </div>
+) : (
+  <div class:list={['foto', 'foto-vazia', 'foto-canto', classe]} role="img" aria-label={descricao}>
+    <span set:html={marcar(descricao)} />
+  </div>
+)}

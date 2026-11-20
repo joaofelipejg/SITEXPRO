@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo-xpro.png';
+import { empresa, menu } from '../data/empresa';
+
+const atual = Astro.url.pathname;
+---
+<header class="cab">
+  <div class="wrap cab-inner">
+    <a href="/" class="cab-marca" aria-label="XPRO Projetos e Levantamentos — página inicial">
+      <Image src={logo} alt="XPRO Projetos e Levantamentos" width={340} loading="eager" />
+    </a>
+
+    <nav class="cab-nav" id="menu-principal" aria-label="Menu principal">
+      <ol>
+        <li><a href="/" aria-current={atual === '/' ? 'page' : undefined}>Início</a></li>
+        {menu.map((item) => (
+          <li>
+            <a href={item.href} aria-current={atual.startsWith(item.href) ? 'page' : undefined}>{item.texto}</a>
+          </li>
+        ))}
+      </ol>
+      <div class="cab-menu-rodape">
+        <a href={`tel:${empresa.telefones[0].e164}`}>{empresa.telefones[0].exibicao}</a>
+        <span>{empresa.horario.curto}</span>
+      </div>
+    </nav>
+
+    <div class="cab-acoes">
+      <a href="/#orcamento" class="btn-orcamento" aria-label="Pedir orçamento"><span><span class="so-desktop">Pedir </span>orçamento</span><span class="seta" aria-hidden="true">→</span></a>
+      <button class="cab-menu-btn" aria-expanded="false" aria-controls="menu-principal">
+        <span class="cab-menu-txt">Menu</span><span class="cab-menu-ico" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const botao = document.querySelector<HTMLButtonElement>('.cab-menu-btn');
+  const fechar = () => {
+    document.body.classList.remove('menu-aberto');
+    botao?.setAttribute('aria-expanded', 'false');
+  };
+  botao?.addEventListener('click', () => {
+    const aberto = document.body.classList.toggle('menu-aberto');
+    botao.setAttribute('aria-expanded', String(aberto));
+  });
+  document.querySelectorAll('.cab-nav a').forEach((a) => a.addEventListener('click', fechar));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(); });
+</script>

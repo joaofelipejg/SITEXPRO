@@ -1,0 +1,15 @@
+# Gerados (a Vercel recria no build)
+node_modules/
+dist/
+.astro/
+
+# Configuração local da Vercel (criada pelo comando "vercel")
+.vercel/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Configuração local do Claude (pré-visualização)
+.claude/

@@ -1,0 +1,20 @@
+---
+interface Props {
+  itens: { pergunta: string; resposta: string; id?: string }[];
+  // "duvidas" = visual da página Dúvidas (ícone desenhado, ids para link direto)
+  variante?: 'padrao' | 'duvidas';
+}
+
+const { itens, variante = 'padrao' } = Astro.props;
+const duvidas = variante === 'duvidas';
+---
+<div class:list={['faq', { 'faq-duvidas': duvidas }]}>
+  {itens.map((item) => (
+    <details id={item.id}>
+      {duvidas
+        ? <summary><span class="faq-pergunta">{item.pergunta}</span><span class="faq-icone" aria-hidden="true"></span></summary>
+        : <summary>{item.pergunta}</summary>}
+      <p>{item.resposta}</p>
+    </details>
+  ))}
+</div>

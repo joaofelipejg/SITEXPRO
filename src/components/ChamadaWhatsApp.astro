@@ -1,0 +1,30 @@
+---
+import { empresa, linkWhatsApp } from '../data/empresa';
+
+interface Props {
+  titulo?: string;
+  texto?: string;
+  mensagem?: string;
+  variante?: 'padrao' | 'duvidas';   // "duvidas": rótulo e subtítulo mais legíveis (só na página Dúvidas)
+}
+
+const {
+  titulo = 'Precisa de um orçamento?',
+  texto = 'Mande a localização do imóvel e o que você precisa. Respondemos em horário comercial.',
+  mensagem,
+  variante = 'padrao',
+} = Astro.props;
+---
+<section class:list={['cta', { 'cta-duvidas': variante === 'duvidas' }]}>
+  <div class="wrap cta-inner">
+    <div>
+      <p class="secao-rot secao-rot-escuro"><span>→</span>Próximo passo</p>
+      <h2>{titulo}</h2>
+      <p>{texto}</p>
+    </div>
+    <div class="cta-acoes">
+      <a href={linkWhatsApp(mensagem)} class="btn-orcamento btn-orcamento-azul" target="_blank" rel="noopener">Chamar no WhatsApp <span class="seta" aria-hidden="true">→</span></a>
+      <a href={`tel:${empresa.telefones[0].e164}`} class="cta-tel mono">{empresa.telefones[0].exibicao}</a>
+    </div>
+  </div>
+</section>

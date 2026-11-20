@@ -1,0 +1,111 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CabecalhoPagina from '../../components/CabecalhoPagina.astro';
+import ChamadaWhatsApp from '../../components/ChamadaWhatsApp.astro';
+import CardObra from '../../components/CardObra.astro';
+import Foto from '../../components/Foto.astro';
+import { breadcrumb } from '../../data/schema';
+import { marcar, temPlaceholder } from '../../data/texto';
+
+export async function getStaticPaths() {
+  const obras = await getCollection('obras');
+  return obras.map((o) => ({ params: { slug: o.id }, props: { obra: o } }));
+}
+
+const { obra } = Astro.props;
+const d = obra.data;
+const url = `/obras/${obra.id}/`;
+const nomeTrilha = temPlaceholder(d.titulo) ? `Obra modelo (${d.tipo.toLowerCase()})` : d.titulo;
+const trilha = [
+  { nome: 'Obras', href: '/obras/' },
+  { nome: nomeTrilha, href: url },
+];
+
+// Serviços na mesma ordem em que aparecem no arquivo da obra
+const servicos = (await getCollection('servicos'))
+  .filter((s) => d.servicos.includes(s.id))
+  .sort((a, b) => d.servicos.indexOf(a.id) - d.servicos.indexOf(b.id));
+// Nome exibido do serviço nesta obra (pode ser mais específico que o título da página do serviço)
+const nomeServico = (s: (typeof servicos)[number]) => d.nomesServicos?.[s.id] ?? s.data.titulo;
+const outras = (await getCollection('obras'))
+  .filter((o) => o.id !== obra.id)
+  .sort((a, b) => a.data.ordem - b.data.ordem)
+  .slice(0, 2);
+---
+<Base
+  title={`${temPlaceholder(d.titulo) ? `Obra modelo: ${d.tipo}` : d.titulo} | Obras XPRO`}
+  description={servicos.length
+    ? `${d.tipo} com ${servicos.map((s) => nomeServico(s).toLowerCase()).join(', ')}. Obra da XPRO no Sul de Minas.`
+    : `${d.tipo} em ${d.cidade}. Obra da XPRO no Sul de Minas.`}
+  schemas={[breadcrumb(trilha)]}
+  noindex={d.modelo}
+>
+  <section class="pagina-topo">
+    <div class="wrap">
+      <nav class="trilha" aria-label="Você está em">
+        <a href="/">Início</a><span aria-hidden="true">/</span><a href="/obras/">Obras</a><span aria-hidden="true">/</span><span aria-current="page">{d.tipo}</span>
+      </nav>
+      <p class="pagina-rot">{d.tipo}</p>
+      <h1 set:html={marcar(d.titulo)} />
+      <p class="pagina-sub" set:html={marcar(d.resumo)} />
+      <dl class="case-ficha">
+        <div><dt>Cliente</dt><dd set:html={marcar(d.cliente)} /></div>
+        <div><dt>Cidade</dt><dd set:html={marcar(d.cidade)} /></div>
+        {d.ano && <div><dt>Ano</dt><dd set:html={marcar(d.ano)} /></div>}
+        {d.area && <div><dt>Área</dt><dd set:html={marcar(d.area)} /></div>}
+        <div><dt>Serviços</dt><dd>{servicos.length
+          ? servicos.map((s, i) => <>{i > 0 && ', '}<a href={`/servicos/${s.id}/`}>{nomeServico(s)}</a></>)
+          : <span set:html={marcar('[PREENCHER: serviço prestado]')} />}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="secao">
+    <div class="wrap">
+      {d.modelo && <p class="aviso-modelo">Obra modelo: preencha os dados reais em src/content/obras/{obra.id}.md. Esta página fica fora do Google até lá.</p>}
+      <div class="galeria" style={`--colunas:${Math.min(Math.max(d.imagens.length + d.fotos.length - 1, 1), 3)}`}>
+        {d.imagens.map((img, i) => <Foto src={img.src} alt={img.alt} descricao={img.alt} largura={1400} carregar={i === 0 ? 'eager' : 'lazy'} foco={img.foco} />)}
+        {d.fotos.map((f) => <Foto descricao={f} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="secao secao-papel">
+    <div class="wrap doc">
+      <div>
+        <section class="doc-secao">
+          <h2><span class="mono">01</span>O desafio</h2>
+          <p set:html={marcar(d.desafio)} />
+        </section>
+        <section class="doc-secao">
+          <h2><span class="mono">02</span>O que fizemos</h2>
+          <ol class="passos">
+            {d.solucao.map((s) => <li><span set:html={marcar(s)} /></li>)}
+          </ol>
+        </section>
+      </div>
+      <aside class="lateral">
+        <div class="caixa">
+          <span class="caixa-rot">Entregáveis</span>
+          <ul class="lista-marco">
+            {d.entregaveis.map((e) => <li set:html={marcar(e)} />)}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {outras.length > 0 && (
+    <section class="secao">
+      <div class="wrap">
+        <header class="secao-cab"><p class="secao-rot"><span>+</span>Outras obras</p></header>
+        <div class="obras">
+          {outras.map((o, i) => <CardObra obra={o} indice={i + 2} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ChamadaWhatsApp titulo="Tem uma obra parecida?" mensagem={`Olá! Vi a obra de ${d.tipo.toLowerCase()} no site e gostaria de um orçamento.`} />
+</Base>

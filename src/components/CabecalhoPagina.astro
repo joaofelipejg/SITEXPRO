@@ -1,0 +1,30 @@
+---
+// Faixa no topo das páginas internas, com trilha de navegação (breadcrumb).
+import Contornos from './Contornos.astro';
+
+interface Props {
+  titulo: string;
+  subtitulo?: string;
+  trilha: { nome: string; href: string }[];
+  rotulo?: string;
+}
+
+const { titulo, subtitulo, trilha, rotulo } = Astro.props;
+---
+<section class="pagina-topo">
+  <Contornos class="pagina-topo-fundo" semente={trilha.length * 13 + titulo.length} />
+  <div class="wrap">
+    <nav class="trilha" aria-label="Você está em">
+      <a href="/">Início</a>
+      {trilha.map((t, i) => (
+        <>
+          <span aria-hidden="true">/</span>
+          {i === trilha.length - 1 ? <span aria-current="page">{t.nome}</span> : <a href={t.href}>{t.nome}</a>}
+        </>
+      ))}
+    </nav>
+    {rotulo && <p class="pagina-rot">{rotulo}</p>}
+    <h1>{titulo}</h1>
+    {subtitulo && <p class="pagina-sub">{subtitulo}</p>}
+  </div>
+</section>

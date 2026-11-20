@@ -1,0 +1,32 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/dustra-service/levantamento-planialtimetrico-2{/}?", "destination": "/servicos/levantamento-planialtimetrico/", "permanent": true },
+    { "source": "/dustra-service/georreferenciamentos{/}?", "destination": "/servicos/georreferenciamento/", "permanent": true },
+    { "source": "/dustra-service/drone{/}?", "destination": "/servicos/levantamento-com-drone/", "permanent": true },
+    { "source": "/dustra-service/acompanhamento-de-obras{/}?", "destination": "/servicos/acompanhamento-de-obras/", "permanent": true },
+    { "source": "/dustra-service/calculos-de-volume{/}?", "destination": "/servicos/calculo-de-volumes/", "permanent": true },
+    { "source": "/dustra-service/curvas-de-nivel{/}?", "destination": "/servicos/curvas-de-nivel/", "permanent": true },
+    { "source": "/dustra-service/demarcacao-de-galpoes{/}?", "destination": "/servicos/demarcacao-de-galpoes/", "permanent": true },
+    { "source": "/dustra-service/demarcacao-de-loteamentos{/}?", "destination": "/servicos/demarcacao-de-loteamentos/", "permanent": true },
+    { "source": "/dustra-service/demarcacao-de-usina-fotovoltaica{/}?", "destination": "/servicos/demarcacao-de-usinas-fotovoltaicas/", "permanent": true },
+    { "source": "/dustra-service/desmembramento-e-remembramento{/}?", "destination": "/servicos/desmembramento-e-remembramento/", "permanent": true },
+    { "source": "/dustra-service/retificacao-e-unificacao-de-matricula{/}?", "destination": "/servicos/retificacao-e-unificacao-de-matricula/", "permanent": true },
+    { "source": "/dustra-service/projetos-de-drenagem{/}?", "destination": "/servicos/projetos-de-drenagem/", "permanent": true },
+    { "source": "/dustra-service/projetos-de-sistema-viario{/}?", "destination": "/servicos/projetos-de-sistema-viario/", "permanent": true },
+    { "source": "/dustra-service/projetos-de-terraplanagem{/}?", "destination": "/servicos/projetos-de-terraplenagem/", "permanent": true },
+    { "source": "/dustra-service/projetos-geometricos{/}?", "destination": "/servicos/projetos-geometricos/", "permanent": true },
+    { "source": "/dustra-service/projetos-urbanisticos{/}?", "destination": "/servicos/projetos-urbanisticos/", "permanent": true },
+    { "source": "/dustra-service/:path*", "destination": "/servicos/", "permanent": true },
+    { "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "permanent": true },
+    { "source": "/wp-admin/:path*", "destination": "/", "permanent": true },
+    { "source": "/wp-content/:path*", "destination": "/", "permanent": true },
+    { "source": "/feed/:path*", "destination": "/", "permanent": true },
+    { "source": "/portfolio{/}?", "destination": "/obras/", "permanent": true }
+  ]
+}

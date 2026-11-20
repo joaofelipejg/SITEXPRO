@@ -1,0 +1,54 @@
+---
+// Dois blocos (Topografia / Projetos) com lista que abre ao clicar.
+import { getCollection } from 'astro:content';
+import { marcar } from '../data/texto';
+
+const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
+const blocos = [
+  {
+    nome: 'Topografia',
+    sigla: 'T',
+    desc: 'Medir, demarcar e regularizar: do levantamento do terreno à matrícula atualizada no cartório.',
+    itens: servicos.filter((s) => s.data.grupo === 'topografia'),
+  },
+  {
+    nome: 'Projetos',
+    sigla: 'P',
+    desc: 'Projetar o que vai ser construído sobre o terreno medido: terraplenagem, drenagem, vias e loteamentos.',
+    itens: servicos.filter((s) => s.data.grupo === 'projetos'),
+  },
+];
+---
+<div class="servicos">
+  {blocos.map((b) => (
+    <div class="bloco">
+      <div class="bloco-cab">
+        <h3>{b.nome}</h3>
+        <p>{String(b.itens.length).padStart(2, '0')} serviços</p>
+      </div>
+      <p class="bloco-desc">{b.desc}</p>
+      <div>
+        {b.itens.slice(0, 4).map((s, i) => (
+          <details class="item">
+            <summary>
+              <span class="item-cod">{b.sigla}-{String(i + 1).padStart(2, '0')}</span>
+              <span class="item-nome">{s.data.titulo}</span>
+              <span class="item-mais" aria-hidden="true"></span>
+            </summary>
+            <div class="item-corpo">
+              <p>{s.data.resumo}</p>
+              <div>
+                <p class="item-rot">Quando você precisa</p>
+                <ul>
+                  {s.data.quandoPrecisa.slice(0, 3).map((q) => <li set:html={marcar(q)} />)}
+                </ul>
+              </div>
+              <a class="link-seta" href={`/servicos/${s.id}/`}>Ver {s.data.titulo.toLowerCase()}</a>
+            </div>
+          </details>
+        ))}
+      </div>
+      <p class="bloco-todos"><a class="link-seta" href="/servicos/">Ver os {b.itens.length} serviços de {b.nome.toLowerCase()}</a></p>
+    </div>
+  ))}
+</div>

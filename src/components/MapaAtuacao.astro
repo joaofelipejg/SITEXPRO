@@ -1,0 +1,90 @@
+---
+// Mapa esquemático do Sul de Minas desenhado a partir de coordenadas reais
+// (aproximadas) das cidades, com anéis de distância a partir de Varginha.
+// Cidades em empresa.cidadesAtendidas aparecem preenchidas; as demais são só referência geográfica.
+import { empresa, grausMinutos } from '../data/empresa';
+
+// Caixa grande o bastante para caber o raio usual de atendimento em volta de Varginha
+const caixa = { oeste: -46.95, leste: -43.93, norte: -20.15, sul: -22.95 };
+const latRef = (caixa.norte + caixa.sul) / 2;
+const kmLon = 111.32 * Math.cos((latRef * Math.PI) / 180);
+const kmLat = 110.6;
+const largura = 640;
+const pxKm = largura / ((caixa.leste - caixa.oeste) * kmLon);
+const altura = Math.round((caixa.norte - caixa.sul) * kmLat * pxKm);
+const px = (lon: number) => (lon - caixa.oeste) * kmLon * pxKm;
+const py = (lat: number) => (caixa.norte - lat) * kmLat * pxKm;
+
+const cidades = [
+  { nome: 'Passos', lat: -20.7189, lon: -46.6097 },
+  { nome: 'Campo Belo', lat: -20.8972, lon: -45.2772 },
+  { nome: 'São João del-Rei', lat: -21.1356, lon: -44.2614, lado: 'esq' },
+  { nome: 'Boa Esperança', lat: -21.0897, lon: -45.5664 },
+  { nome: 'Lavras', lat: -21.2453, lon: -44.9997, lado: 'esq' },
+  { nome: 'Três Pontas', lat: -21.3667, lon: -45.5128 },
+  { nome: 'Alfenas', lat: -21.4256, lon: -45.9475 },
+  { nome: 'Machado', lat: -21.6747, lon: -45.92 },
+  { nome: 'Elói Mendes', lat: -21.6103, lon: -45.5658, lado: 'esq' },
+  { nome: 'Três Corações', lat: -21.6956, lon: -45.2553 },
+  { nome: 'Campanha', lat: -21.8361, lon: -45.4003, lado: 'esq' },
+  { nome: 'Poços de Caldas', lat: -21.7878, lon: -46.5614 },
+  { nome: 'Lambari', lat: -21.9758, lon: -45.3497 },
+  { nome: 'São Lourenço', lat: -22.1164, lon: -45.0544, lado: 'esq' },
+  { nome: 'Pouso Alegre', lat: -22.23, lon: -45.9364 },
+  { nome: 'Itajubá', lat: -22.4256, lon: -45.4528 },
+];
+
+const sede = { x: px(empresa.coordenadas.lon), y: py(empresa.coordenadas.lat) };
+const aneis = [50, 100];
+const raio = empresa.raioKm;
+const meridianos = [-46.5, -46, -45.5, -45, -44.5];
+const paralelos = [-20.5, -21, -21.5, -22, -22.5];
+---
+<figure>
+<svg class="mapa-svg" viewBox={`0 0 ${largura} ${altura}`} role="img" aria-labelledby="mapa-titulo mapa-desc">
+  <title id="mapa-titulo">Mapa do Sul de Minas com Varginha ao centro</title>
+  <desc id="mapa-desc">Raio usual de atendimento de {empresa.raioKm} km a partir de Varginha, com anéis de 50 e 100 km. Cidades atendidas: {empresa.cidadesAtendidas.join(', ')}.</desc>
+
+  {meridianos.map((lon) => (
+    <g>
+      <line class="grade" x1={px(lon)} x2={px(lon)} y1="0" y2={altura} />
+      <text class="grade-rot" x={px(lon) + 4} y="14">{grausMinutos(lon, 'lon')}</text>
+    </g>
+  ))}
+  {paralelos.map((lat) => (
+    <g>
+      <line class="grade" x1="0" x2={largura} y1={py(lat)} y2={py(lat)} />
+      <text class="grade-rot" x="6" y={py(lat) - 5}>{grausMinutos(lat, 'lat')}</text>
+    </g>
+  ))}
+
+  {aneis.map((km) => (
+    <g>
+      <circle class="anel" cx={sede.x} cy={sede.y} r={km * pxKm} />
+      <text class="anel-rot" x={sede.x + km * pxKm * 0.71 + 6} y={sede.y + km * pxKm * 0.71 + 12}>{km} km</text>
+    </g>
+  ))}
+
+  <g>
+    <circle class="anel-raio" cx={sede.x} cy={sede.y} r={raio * pxKm} />
+    <text class="anel-raio-rot" x={sede.x} y={sede.y - raio * pxKm + 18} text-anchor="middle">Raio usual de atendimento · {raio} km</text>
+  </g>
+
+  {cidades.map((c) => {
+    const x = px(c.lon), y = py(c.lat);
+    const esq = c.lado === 'esq';
+    return (
+      <g class:list={['cidade', { atendida: empresa.cidadesAtendidas.includes(c.nome) }]}>
+        <circle cx={x} cy={y} r="3.5" />
+        <text x={esq ? x - 8 : x + 8} y={y + 4} text-anchor={esq ? 'end' : 'start'}>{c.nome}</text>
+      </g>
+    );
+  })}
+
+  <g class="sede">
+    <circle cx={sede.x} cy={sede.y} r="7" />
+    <text x={sede.x + 12} y={sede.y + 5}>Varginha</text>
+  </g>
+</svg>
+<figcaption class="legenda">● Cidades atendidas  ○ Outras cidades da região. Coordenadas aproximadas; norte para cima.</figcaption>
+</figure>

@@ -1,0 +1,223 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Contornos from '../components/Contornos.astro';
+import SecaoCab from '../components/SecaoCab.astro';
+import ListaServicos from '../components/ListaServicos.astro';
+import CardObra from '../components/CardObra.astro';
+import Foto from '../components/Foto.astro';
+import MapaAtuacao from '../components/MapaAtuacao.astro';
+import FormOrcamento from '../components/FormOrcamento.astro';
+import { empresa, linkWhatsApp, grausMinutos, listaCidades } from '../data/empresa';
+import { marcar } from '../data/texto';
+import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
+import fotoEstacao from '../assets/fotos/estacao-total-obra.jpg';
+import fotoPrisma from '../assets/fotos/prisma-ponto-aux.jpg';
+import fotoDrone from '../assets/fotos/drone-terraplenagem.jpg';
+
+const obras = (await getCollection('obras'))
+  .filter((o) => o.data.destaque)
+  .sort((a, b) => a.data.ordem - b.data.ordem)
+  .slice(0, 3);
+
+const { coordenadas, endereco } = empresa;
+
+const etapas = [
+  { titulo: 'Contato', texto: 'Você manda a localização e conta o que precisa. Pedimos matrícula, projeto ou o que já existir.' },
+  { titulo: 'Visita', texto: 'Quando necessário, vamos ao local para reconhecer acesso, divisas e vegetação antes de orçar.' },
+  { titulo: 'Campo', texto: 'Levantamento com GNSS RTK, estação total ou drone, conforme a área e a precisão exigida.' },
+  { titulo: 'Processamento', texto: 'Os dados viram planta, modelo do terreno e projeto no escritório, com conferência técnica.' },
+  { titulo: 'Entrega', texto: 'Arquivos em DWG e PDF, memorial e relatório, com ART do responsável técnico.' },
+];
+
+const equipamentos = [
+  { tipo: 'Receptor GNSS RTK', diretriz: 'Posicionamento geodésico de alta precisão com correção em tempo real.', uso: 'Georreferenciamento, levantamentos em área aberta, locação.' },
+  { tipo: 'Estação total', diretriz: 'Medição óptica de alta exatidão angular e linear.', uso: 'Áreas urbanas, obras, locação de estruturas e pontos sob cobertura.' },
+  { tipo: 'Drone (RPA)', diretriz: 'Aerofotogrametria com alta densidade de pontos e ortorretificação.', uso: 'Ortofoto, modelo digital do terreno e volumes em áreas extensas.' },
+  { tipo: 'Escritório técnico', diretriz: 'Processamento dos dados de campo, conferência técnica e elaboração das plantas em CAD.', uso: 'Planta, modelo do terreno e projeto prontos para a obra e para aprovação.' },
+];
+---
+<Base
+  title="Topografia e Georreferenciamento em Varginha e Sul de Minas | XPRO"
+  description="Levantamento topográfico, georreferenciamento INCRA, drone e projetos de terraplenagem, drenagem e loteamento em Varginha e no Sul de Minas. Planta, memorial e ART."
+>
+  <!-- 1. HERO ============================================================ -->
+  <section class="hero" aria-labelledby="hero-titulo" data-lat={coordenadas.lat} data-lon={coordenadas.lon}>
+    <div class="hero-grade" aria-hidden="true"></div>
+    <Contornos animar semente={23} />
+    <div class="mira" aria-hidden="true"></div>
+    <p class="hero-coord" aria-hidden="true">
+      <span data-coord>{grausMinutos(coordenadas.lat, 'lat')} · {grausMinutos(coordenadas.lon, 'lon')}</span><br>
+      <b>SIRGAS 2000</b> · {endereco.cidade}/{endereco.uf}
+    </p>
+
+    <div class="wrap hero-corpo">
+      <p class="hero-rot">Topografia e projetos · {endereco.cidade}/{endereco.uf}</p>
+      <h1 id="hero-titulo">Da caracterização exata do terreno à entrega de <em>projetos prontos</em> para aprovação e execução.</h1>
+      <p class="hero-sub">
+        <strong>Levantamento topográfico, georreferenciamento e engenharia civil no Sul de Minas.</strong>
+        Operamos com GNSS RTK, estação total e drone para entregar plantas, memoriais descritivos e ART com rigor técnico.
+      </p>
+      <div class="hero-acoes">
+        <a href="#orcamento" class="btn-orcamento">Pedir orçamento <span class="seta" aria-hidden="true">→</span></a>
+        <a href="#obras" class="btn-orcamento btn-secundario">Ver obras <span class="seta" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <div class="hero-faixa">
+      <dl class="wrap">
+        <div><dt>Cidades atendidas</dt><dd>{listaCidades}</dd></div>
+        <div><dt>Base</dt><dd>{endereco.cidade}/{endereco.uf} · desde {empresa.fundacao}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 2. SERVIÇOS ======================================================== -->
+  <section class="secao" id="servicos">
+    <div class="wrap">
+      <SecaoCab num="01" rotulo="Serviços" titulo="Dados precisos e projetos bem elaborados para você investir, construir e regularizar sem surpresas no canteiro ou no cartório.">
+        <p>Topografia e projeto no mesmo escritório: o levantamento já sai no formato que o projeto precisa, sem refazer medição entre uma etapa e outra.</p>
+      </SecaoCab>
+      <ListaServicos />
+    </div>
+  </section>
+
+  <!-- 3. OBRAS =========================================================== -->
+  <section class="secao secao-papel" id="obras">
+    <div class="wrap">
+      <SecaoCab num="02" rotulo="Obras entregues" titulo="Trabalhos em campo, do Sul de Minas.">
+        <p>Cada obra tem a sua página: local, serviço, o problema do cliente, o que fizemos e o que foi entregue.</p>
+      </SecaoCab>
+      <div class="obras">
+        {obras.map((o, i) => <CardObra obra={o} indice={i + 1} />)}
+      </div>
+      <div class="secao-pe obras-pe">
+        <a class="btn-orcamento btn-contorno" href="/obras/">Todas as obras <span class="seta" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Faixa de foto: vista aérea feita com drone ---------------------- -->
+  <figure class="faixa-foto">
+    <Image
+      src={fotoDrone}
+      alt="Vista aérea feita com drone de uma terraplenagem em área rural, com platô de terra vermelha cercado por cafezais"
+      widths={[640, 1024, 1600]}
+      sizes="100vw"
+    />
+    <figcaption class="wrap">
+      <span class="secao-rot"><span>RPA</span>Vista aérea</span>
+      <span>Terraplenagem em área rural, registrada com drone.</span>
+    </figcaption>
+  </figure>
+
+  <!-- 4. COMO TRABALHAMOS =============================================== -->
+  <section class="secao" id="como-trabalhamos">
+    <div class="wrap">
+      <SecaoCab num="03" rotulo="Como trabalhamos" titulo="Cinco etapas, do primeiro contato à ART.">
+        <p>O prazo depende da área, do acesso e do escopo de cada trabalho, e é informado junto com o orçamento.</p>
+      </SecaoCab>
+      <ol class="regua">
+        {etapas.map((e, i) => (
+          <li class="etapa">
+            <span class="etapa-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{e.titulo}</h3>
+            <p>{e.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. EQUIPAMENTOS ==================================================== -->
+  <section class="secao secao-papel" id="equipamentos">
+    <div class="wrap">
+      <SecaoCab num="04" rotulo="Equipamentos" titulo="O que vai a campo.">
+        <p>Equipamento certo para cada área: satélite onde o céu é aberto, estação total onde há obstáculos, drone onde a área é grande.</p>
+      </SecaoCab>
+      <div class="equip">
+        <figure class="fotos-campo">
+          <Foto src={fotoEquipeGnss} alt="Dois técnicos da XPRO com uniforme azul fazendo levantamento com receptor GNSS e coletora em frente a um galpão metálico" descricao="Equipe XPRO em levantamento com GNSS" largura={760} class="foto-alta" foco="50% 50%" />
+          <Foto src={fotoEstacao} alt="Estação total amarela em tripé, com coordenadas no visor, diante de escavação de obra" descricao="Estação total em obra" largura={420} />
+          <Foto src={fotoPrisma} alt="Mini prisma com bolha nivelada sobre ponto auxiliar AUX 11 marcado no concreto" descricao="Mini prisma sobre ponto auxiliar" largura={420} />
+          <figcaption class="legenda">Equipe com receptor GNSS RTK e coletora, estação total e mini prisma sobre ponto de apoio em obra.</figcaption>
+        </figure>
+        <table class="tabela">
+          <caption>Ficha técnica</caption>
+          <thead><tr><th scope="col">Equipamento</th><th scope="col">Especificação</th><th scope="col">Aplicação</th></tr></thead>
+          <tbody>
+            {equipamentos.map((e) => (
+              <tr>
+                <th scope="row">{e.tipo}</th>
+                <td class="td-diretriz">{e.diretriz}</td>
+                <td>{e.uso}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ÁREA DE ATUAÇÃO ================================================= -->
+  <section class="secao" id="area">
+    <div class="wrap">
+      <SecaoCab num="05" rotulo="Área de atuação" titulo="Base em Varginha, campo em todo o Sul de Minas." />
+      <div class="area">
+        <MapaAtuacao />
+        <div>
+          <p>Saímos de Varginha para levantamentos e obras num raio usual de {empresa.raioKm} km. Para áreas mais distantes, o deslocamento entra no orçamento.</p>
+          <ul class="area-lista">
+            {empresa.cidadesAtendidas.map((c) => (
+              <li><span>{c}</span><span>{c === endereco.cidade ? 'Sede' : 'Atendida'}</span></li>
+            ))}
+            <li><span><strong>Raio usual de atendimento</strong></span><span>{empresa.raioKm} km</span></li>
+          </ul>
+          <p style="margin-top:20px"><a class="link-seta" href={linkWhatsApp('Olá! Vocês atendem na cidade de ')} target="_blank" rel="noopener">Perguntar sobre minha cidade</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. ORÇAMENTO ======================================================= -->
+  <section class="secao secao-azul" id="orcamento">
+    <div class="wrap">
+      <SecaoCab num="06" rotulo="Orçamento" titulo="Conte o que precisa medir ou projetar." />
+      <div class="orc">
+        <div class="orc-info">
+          <p>Quanto mais detalhe, mais preciso o orçamento: localização, área aproximada e, se tiver, a matrícula do imóvel.</p>
+          <dl>
+            <div><dt>WhatsApp e telefone</dt><dd><a href={linkWhatsApp()} target="_blank" rel="noopener">{empresa.telefones[0].exibicao}</a></dd></div>
+            <div><dt>E-mail</dt><dd><a href={`mailto:${empresa.email}`}>{empresa.email}</a></dd></div>
+            <div><dt>Escritório</dt><dd>{endereco.rua}, {endereco.bairro}<br>{empresa.horario.texto}</dd></div>
+          </dl>
+        </div>
+        <FormOrcamento />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Mira e leitura de coordenadas que seguem o ponteiro no hero (só com mouse).
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const saida = document.querySelector<HTMLElement>('[data-coord]');
+  if (hero && saida && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    // Centro vem de empresa.coordenadas (atributos data-lat/data-lon do hero).
+    const centro = { lat: Number(hero.dataset.lat), lon: Number(hero.dataset.lon) };
+    const fmt = (v: number, eixo: 'lat' | 'lon') => {
+      const h = eixo === 'lat' ? (v < 0 ? 'S' : 'N') : (v < 0 ? 'W' : 'E');
+      const a = Math.abs(v), g = Math.floor(a), mTot = (a - g) * 60, m = Math.floor(mTot), s = Math.round((mTot - m) * 60);
+      return `${g}°${String(m).padStart(2, '0')}′${String(s).padStart(2, '0')}″${h}`;
+    };
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+      hero.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      hero.style.setProperty('--my', `${e.clientY - r.top}px`);
+      const lat = centro.lat + (0.5 - fy) * 0.06, lon = centro.lon + (fx - 0.5) * 0.1;
+      saida.textContent = `${fmt(lat, 'lat')} · ${fmt(lon, 'lon')}`;
+    });
+  }
+</script>

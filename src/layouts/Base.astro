@@ -1,0 +1,108 @@
+---
+import '../styles/global.css';
+import Cabecalho from '../components/Cabecalho.astro';
+import Rodape from '../components/Rodape.astro';
+import { empresa, linkWhatsApp } from '../data/empresa';
+import { getImage } from 'astro:assets';
+import fotoObra from '../assets/obra-gnss.jpg';
+import logo from '../assets/logo-xpro.png';
+
+interface Props {
+  title: string;
+  description: string;
+  // Dados estruturados extras desta página (Service, FAQPage, BreadcrumbList...)
+  schemas?: object[];
+  // Páginas ainda com conteúdo de exemplo não devem aparecer no Google.
+  noindex?: boolean;
+}
+
+const { title, description, schemas = [], noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = await getImage({ src: fotoObra, width: 1200, format: 'jpg' });
+const ogImageUrl = new URL(ogImage.src, Astro.site).href;
+const logoImg = await getImage({ src: logo, width: 400, format: 'png' });
+
+const { endereco, horario } = empresa;
+const localBusiness = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${empresa.url}/#empresa`,
+  name: empresa.nome,
+  url: `${empresa.url}/`,
+  logo: new URL(logoImg.src, Astro.site).href,
+  image: ogImageUrl,
+  telephone: empresa.telefones[0].e164,
+  email: empresa.email,
+  foundingDate: empresa.fundacao,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: endereco.rua,
+    addressLocality: endereco.cidade,
+    addressRegion: endereco.uf,
+    addressCountry: 'BR',
+    ...(endereco.cep ? { postalCode: endereco.cep } : {}),
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: empresa.coordenadas.lat, longitude: empresa.coordenadas.lon },
+  openingHoursSpecification: [{
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: horario.dias,
+    opens: horario.abre,
+    closes: horario.fecha,
+  }],
+  areaServed: empresa.areaAtendida.map((nome) => ({ '@type': 'Place', name: nome })),
+  sameAs: Object.values(empresa.redes),
+};
+---
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  {noindex && <meta name="robots" content="noindex, follow">}
+  <link rel="canonical" href={canonical}>
+  <link rel="icon" href="/favicon.png">
+  <link rel="sitemap" href="/sitemap-index.xml">
+  <meta name="theme-color" content="#1a244d">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content={empresa.nome}>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={ogImageUrl}>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+  {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <Cabecalho />
+  <main id="conteudo">
+    <slot />
+  </main>
+  <Rodape />
+
+  <a class="whats-flutuante" href={linkWhatsApp()} target="_blank" rel="noopener" aria-label={`Falar no WhatsApp ${empresa.telefones[0].exibicao}`}>
+    <span class="whats-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="24" height="24" fill="currentColor"><path d="M16 3C8.8 3 3 8.8 3 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.8c1.9 1 4 1.5 6.2 1.5 7.2 0 13-5.8 13-13S23.2 3 16 3zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-4 1.1 1.1-3.9-.3-.4C5.7 20 5.2 18 5.2 16 5.2 10 10 5.2 16 5.2S26.8 10 26.8 16 22 26.6 16 26.6zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1c-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2s0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5s0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.2 1.1-1.2 2.7 1.2 3.1 1.3 3.4c.2.2 2.3 3.6 5.6 5 .8.3 1.4.5 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5s.3-1.4.2-1.5c-.1-.2-.3-.3-.6-.4z"/></svg></span>
+  </a>
+
+  <script>
+    // Na home, o botão do WhatsApp aparece depois que o visitante passa do hero;
+    // nas demais páginas, fica sempre visível.
+    const whats = document.querySelector<HTMLElement>('.whats-flutuante');
+    if (whats) {
+      const temHero = !!document.querySelector('.hero');
+      const atualizar = () => whats.classList.toggle('visivel', !temHero || window.scrollY > window.innerHeight * 0.5);
+      atualizar();
+      window.addEventListener('scroll', atualizar, { passive: true });
+    }
+  </script>
+</body>
+</html>

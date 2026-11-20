@@ -1,0 +1,1 @@
+﻿Obras modelo retiradas do site a pedido. Para voltar com alguma, mova o arquivo .md de volta para src/content/obras/ e faça o build.

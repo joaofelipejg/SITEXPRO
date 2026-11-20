@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import CabecalhoPagina from '../components/CabecalhoPagina.astro';
+import ChamadaWhatsApp from '../components/ChamadaWhatsApp.astro';
+import Faq from '../components/Faq.astro';
+import { breadcrumb, faqPage, semPlaceholder } from '../data/schema';
+import { linkWhatsApp } from '../data/empresa';
+import { gruposDuvidas, slug } from '../data/duvidas';
+
+const trilha = [{ nome: 'Perguntas frequentes', href: '/perguntas-frequentes/' }];
+
+// Cada grupo e cada pergunta ganham um id para link direto (#o-que-e-art)
+const grupos = gruposDuvidas.map((g, i) => ({
+  ...g,
+  num: String(i + 1).padStart(2, '0'),
+  id: slug(g.titulo),
+  itens: g.itens.map((item) => ({ ...item, id: slug(item.pergunta) })),
+}));
+const todos = grupos.flatMap((g) => g.itens);
+---
+<Base
+  title="Perguntas Frequentes sobre Topografia e Georreferenciamento | XPRO"
+  description="Tire dúvidas sobre levantamento topográfico, georreferenciamento, retificação de área, ART, prazos e orçamentos com a XPRO, em Varginha e no Sul de Minas."
+  schemas={[breadcrumb(trilha), faqPage(semPlaceholder(todos))]}
+>
+  <CabecalhoPagina
+    rotulo="Dúvidas"
+    titulo="Perguntas frequentes"
+    subtitulo="Respostas diretas para as dúvidas mais comuns sobre topografia, regularização de imóveis e orçamentos."
+    trilha={trilha}
+  />
+
+  <section class="secao">
+    <div class="wrap duvidas">
+      <div class="duvidas-lista">
+        {grupos.map((g) => (
+          <section class="duvidas-grupo" id={g.id} aria-labelledby={`${g.id}-titulo`}>
+            <h2 class="secao-rot duvidas-rot" id={`${g.id}-titulo`}><span>{g.num}</span>{g.titulo}</h2>
+            <Faq itens={g.itens} variante="duvidas" />
+          </section>
+        ))}
+      </div>
+
+      <aside class="duvidas-lateral" aria-label="Navegação das perguntas">
+        <nav class="duvidas-nav" aria-label="Categorias">
+          <p class="duvidas-nav-rot">Categorias</p>
+          <ul>
+            {grupos.map((g) => (
+              <li><a href={`#${g.id}`} data-grupo={g.id}><span>{g.num}</span>{g.titulo}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <div class="caixa caixa-azul duvidas-ajuda">
+          <span class="caixa-rot">Não achou sua dúvida?</span>
+          <p>Pergunte direto para a equipe técnica pelo WhatsApp (35) 99740-4241.</p>
+          <a href={linkWhatsApp('Olá! Tenho uma dúvida sobre ')} class="btn-orcamento" target="_blank" rel="noopener">Perguntar no WhatsApp <span class="seta" aria-hidden="true">→</span></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <ChamadaWhatsApp titulo="Ficou com alguma dúvida?" texto="Pergunte direto para a equipe técnica pelo WhatsApp." variante="duvidas" />
+</Base>
+
+<script>
+  // Abre e rola até a pergunta quando a página é aberta com #id (ex.: /perguntas-frequentes/#o-que-e-art)
+  // A rolagem é imediata ("instant") para não ser interrompida enquanto fontes e imagens carregam.
+  const abrirDoHash = () => {
+    const alvo = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (alvo instanceof HTMLDetailsElement) {
+      alvo.open = true;
+      alvo.scrollIntoView({ block: 'start', behavior: 'instant' });
+    }
+  };
+  abrirDoHash();
+  window.addEventListener('load', abrirDoHash, { once: true });
+  window.addEventListener('hashchange', abrirDoHash);
+
+  // Destaca na navegação a categoria que está visível na tela
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('.duvidas-nav a')].map((a) => [a.dataset.grupo, a]),
+  );
+  const observador = new IntersectionObserver((entradas) => {
+    entradas.forEach((e) => {
+      if (!e.isIntersecting) return;
+      links.forEach((a) => a.removeAttribute('aria-current'));
+      links.get(e.target.id)?.setAttribute('aria-current', 'true');
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  document.querySelectorAll('.duvidas-grupo').forEach((g) => observador.observe(g));
+</script>

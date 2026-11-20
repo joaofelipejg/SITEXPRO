@@ -1,0 +1,75 @@
+---
+// Rodapé no formato de carimbo de prancha técnica.
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import logo from '../assets/logo-xpro.png';
+import { empresa, menu, grausMinutos } from '../data/empresa';
+
+const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
+const topografia = servicos.filter((s) => s.data.grupo === 'topografia');
+const projetos = servicos.filter((s) => s.data.grupo === 'projetos');
+const { endereco, coordenadas } = empresa;
+const ano = new Date().getFullYear();
+---
+<footer class="rodape">
+  <div class="wrap">
+    <div class="carimbo">
+      <div class="cel cel-marca">
+        <Image src={logo} alt="XPRO Projetos e Levantamentos" width={360} />
+        <p>Topografia e projetos de engenharia em Varginha e no Sul de Minas.</p>
+      </div>
+
+      <div class="cel">
+        <span class="cel-rot">Endereço</span>
+        <p>{endereco.rua}<br>{endereco.bairro} · {endereco.cidade}/{endereco.uf}</p>
+        <p class="mono">{grausMinutos(coordenadas.lat, 'lat')} {grausMinutos(coordenadas.lon, 'lon')}</p>
+      </div>
+
+      <div class="cel">
+        <span class="cel-rot">Contato</span>
+        <ul>
+          {empresa.telefones.map((t) => <li><a href={`tel:${t.e164}`}>{t.exibicao}</a></li>)}
+          <li><a href={`mailto:${empresa.email}`}>{empresa.email}</a></li>
+        </ul>
+      </div>
+
+      <div class="cel">
+        <span class="cel-rot">Expediente</span>
+        <p>{empresa.horario.texto}</p>
+        <div class="cel-folha">
+          <div><span class="cel-rot">Folha</span><span class="mono">01/01</span></div>
+          <div><span class="cel-rot">Escala</span><span class="mono">1:1</span></div>
+          <div><span class="cel-rot">Desde</span><span class="mono">{empresa.fundacao}</span></div>
+          <div><span class="cel-rot">Revisão</span><span class="mono">{ano}</span></div>
+        </div>
+      </div>
+
+      <div class="cel cel-larga">
+        <span class="cel-rot">Topografia</span>
+        <ul class="lista-col">
+          {topografia.map((s) => <li><a href={`/servicos/${s.id}/`}>{s.data.titulo}</a></li>)}
+        </ul>
+      </div>
+
+      <div class="cel">
+        <span class="cel-rot">Projetos</span>
+        <ul>
+          {projetos.map((s) => <li><a href={`/servicos/${s.id}/`}>{s.data.titulo}</a></li>)}
+        </ul>
+      </div>
+
+      <div class="cel">
+        <span class="cel-rot">Site</span>
+        <ul>
+          <li><a href="/">Início</a></li>
+          {menu.map((m) => <li><a href={m.href}>{m.texto}</a></li>)}
+          <li><a href={empresa.redes.instagram} target="_blank" rel="noopener">Instagram ↗</a></li>
+          <li><a href={empresa.redes.facebook} target="_blank" rel="noopener">Facebook ↗</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p class="rodape-base mono">© {ano} {empresa.nome} · {endereco.cidade}/{endereco.uf}</p>
+  </div>
+</footer>

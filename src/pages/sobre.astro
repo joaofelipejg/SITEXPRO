@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro';
+import CabecalhoPagina from '../components/CabecalhoPagina.astro';
+import ChamadaWhatsApp from '../components/ChamadaWhatsApp.astro';
+import SecaoCab from '../components/SecaoCab.astro';
+import Foto from '../components/Foto.astro';
+import { Image } from 'astro:assets';
+import { empresa } from '../data/empresa';
+import { breadcrumb } from '../data/schema';
+import fotoEquipeEstacao from '../assets/fotos/equipe-estacao-total.jpg';
+import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
+import fotoEquipeOperador from '../assets/fotos/equipe-operador-gnss.jpg';
+
+const trilha = [{ nome: 'Sobre', href: '/sobre/' }];
+
+// Clientes (nesta ordem). Para colocar o logo: salve o arquivo em src/assets/clientes/,
+// importe no topo (ex.: import logoCimed from '../assets/clientes/cimed.png';) e preencha "logo".
+// Sem logo, a célula mostra o nome do cliente em texto.
+const clientes: { nome: string; segmento: string; logo?: ImageMetadata }[] = [
+  { nome: 'Cimed', segmento: 'Indústria farmacêutica' },
+  { nome: 'Grupo Boticário', segmento: 'Logística' },
+  { nome: 'Nutrien', segmento: 'Soluções agrícolas' },
+  { nome: 'Andrade FS Incorporadora', segmento: 'Incorporação' },
+  { nome: 'Supermercados Alvorada', segmento: 'Varejo' },
+  { nome: 'Fortgreen', segmento: 'Agronegócio' },
+];
+
+// Indicadores do portfólio da XPRO
+const indicadores = [
+  { valor: '+100', rotulo: 'Projetos entregues', desc: 'Projetos executados com rigor técnico e foco na viabilidade de execução em campo.' },
+  { valor: '+500', rotulo: 'Hectares levantados', desc: 'Mapeamentos de alta precisão com tecnologia GNSS RTK e drones profissionais.' },
+  { valor: '100%', rotulo: 'Com ART registrada', desc: 'Segurança técnica e jurídica assegurada em todas as etapas.' },
+];
+---
+<Base
+  title="Sobre a XPRO | Topografia e Projetos em Varginha – MG"
+  description="XPRO Projetos e Levantamentos: topografia e projetos de engenharia em Varginha (MG) desde 2023. Equipe, responsável técnico, equipamentos e forma de trabalho."
+  schemas={[breadcrumb(trilha)]}
+>
+  <CabecalhoPagina
+    rotulo={`Varginha/MG · desde ${empresa.fundacao}`}
+    titulo="Um escritório de topografia e projeto no Sul de Minas."
+    subtitulo="Medimos o terreno e projetamos o que vai ser construído nele, com a mesma equipe do campo ao escritório."
+    trilha={trilha}
+  />
+
+  <section class="secao">
+    <div class="wrap equip">
+      <figure class="fotos-equipe">
+        <Foto src={fotoEquipeEstacao} alt="Dois integrantes da equipe XPRO de capacete, colete e cinto de segurança, sorrindo ao lado de uma estação total no alto de uma obra pré-moldada" descricao="Equipe XPRO com estação total no alto da obra" largura={720} class="foto-destaque" carregar="eager" />
+        <Foto src={fotoEquipeGnss} alt="Dois técnicos da XPRO com uniforme azul fazendo levantamento com receptor GNSS e coletora em frente a um galpão metálico" descricao="Equipe XPRO em levantamento com GNSS" largura={480} />
+        <Foto src={fotoEquipeOperador} alt="Técnico da XPRO de capacete e colete laranja operando a coletora com o receptor GNSS no bastão, em canteiro de obra" descricao="Técnico da XPRO com GNSS e coletora" largura={480} />
+        <figcaption class="legenda">João Felipe (à esquerda), técnico em agrimensura e engenheiro civil, numa locação em obra pré-moldada.</figcaption>
+      </figure>
+      <div>
+        <SecaoCab num="01" rotulo="Quem somos" titulo="Precisão no campo, projeto que sai do papel." />
+        <div class="sobre-texto">
+          <p>Fundada em 2023, a X Pro Projetos e Levantamentos é uma empresa familiar especializada em <strong>projetos e topografia</strong>. Com equipe técnica e equipamentos GNSS, estação total e drone, nos destacamos pela precisão na coleta de dados e no desenvolvimento de projetos viáveis.</p>
+          <p>Mais do que executar serviços, transformamos ideias em realidade com comprometimento, qualidade e atenção aos detalhes. Começamos atendendo loteadoras da região e hoje trabalhamos também para indústrias como Cimed e Nutrien.</p>
+          <p>A responsabilidade social e ambiental guia cada etapa do nosso trabalho, do levantamento à entrega com ART.</p>
+        </div>
+        <dl class="sobre-fatos">
+          <div><dt>Empresa</dt><dd>Familiar</dd></div>
+          <div><dt>Desde</dt><dd>{empresa.fundacao}</dd></div>
+          <div><dt>Base</dt><dd>{empresa.endereco.cidade}/{empresa.endereco.uf}</dd></div>
+          <div><dt>Equipamentos</dt><dd>GNSS CHCNAV · Estação total · Drone</dd></div>
+        </dl>
+        <p class="sobre-nota">Seguimos as Normas Regulamentadoras exigidas em canteiro de obra e entregamos cada serviço com ART do responsável técnico.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao secao-papel" aria-labelledby="clientes-titulo">
+    <div class="wrap">
+      <SecaoCab num="02" rotulo="Clientes" titulo="Quem já trabalhou com a X Pro." id="clientes-titulo" />
+      <ul class="clientes">
+        {clientes.map((c) => (
+          <li class="cliente">
+            <div class="cliente-logo">
+              {c.logo
+                ? <Image src={c.logo} alt={c.nome} height={96} />
+                : <span class="cliente-nome">{c.nome}</span>}
+            </div>
+            <span class="cliente-seg">{c.segmento}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="secao secao-azul" aria-labelledby="indicadores-titulo">
+    <div class="wrap">
+      <SecaoCab num="03" rotulo="Indicadores" titulo="Capacidade técnica em números." id="indicadores-titulo" />
+      <ul class="indicadores">
+        {indicadores.map((i) => (
+          <li class="indicador">
+            <span class="ind-valor">{i.valor}</span>
+            <span class="ind-rotulo">{i.rotulo}</span>
+            <p>{i.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <ChamadaWhatsApp />
+</Base>

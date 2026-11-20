@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CabecalhoPagina from '../../components/CabecalhoPagina.astro';
+import ChamadaWhatsApp from '../../components/ChamadaWhatsApp.astro';
+import { breadcrumb } from '../../data/schema';
+import { linkWhatsApp } from '../../data/empresa';
+
+const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
+const grupos = [
+  { nome: 'Topografia', sigla: 'T', itens: servicos.filter((s) => s.data.grupo === 'topografia') },
+  { nome: 'Projetos', sigla: 'P', itens: servicos.filter((s) => s.data.grupo === 'projetos') },
+];
+const trilha = [{ nome: 'Serviços', href: '/servicos/' }];
+---
+<Base
+  title="Serviços de Topografia e Projetos em Varginha e Sul de Minas | XPRO"
+  description="Levantamento topográfico, georreferenciamento, drone, locação de obras, regularização de imóveis e projetos de terraplenagem e loteamentos no Sul de Minas."
+  schemas={[breadcrumb(trilha)]}
+>
+  <CabecalhoPagina
+    rotulo="Índice de serviços"
+    titulo="Topografia e projeto, do levantamento à ART."
+    subtitulo="Escolha o serviço para ver quando ele é necessário, como funciona e o que é entregue."
+    trilha={trilha}
+  />
+
+  <section class="secao">
+    <div class="wrap">
+      <p class="indice-ajuda">Não sabe qual escolher? Explique a situação pelo <a href={linkWhatsApp('Olá! Não sei qual serviço preciso. A situação é a seguinte: ')} target="_blank" rel="noopener">WhatsApp</a>.</p>
+      <div class="indice-servicos">
+        {grupos.map((g) => (
+          <div>
+            <div class="bloco-cab"><h2>{g.nome}</h2><p>{String(g.itens.length).padStart(2, '0')} serviços</p></div>
+            <div class="grade-servicos">
+              {g.itens.map((s, i) => (
+                <a class="linha-servico" href={`/servicos/${s.id}/`}>
+                  <span class="item-cod">{g.sigla}-{String(i + 1).padStart(2, '0')}</span>
+                  <strong>{s.data.titulo}</strong>
+                  <span class="seta" aria-hidden="true">→</span>
+                  <p>{s.data.resumo}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ChamadaWhatsApp titulo="Não sabe qual serviço precisa?" texto="Explique a situação do imóvel ou da obra. Indicamos o serviço certo antes de orçar." />
+</Base>

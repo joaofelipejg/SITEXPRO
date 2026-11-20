@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CabecalhoPagina from '../../components/CabecalhoPagina.astro';
+import Faq from '../../components/Faq.astro';
+import ChamadaWhatsApp from '../../components/ChamadaWhatsApp.astro';
+import CardObra from '../../components/CardObra.astro';
+import { empresa, linkWhatsApp } from '../../data/empresa';
+import { breadcrumb, faqPage, semPlaceholder } from '../../data/schema';
+import { marcar } from '../../data/texto';
+
+export async function getStaticPaths() {
+  const servicos = await getCollection('servicos');
+  return servicos.map((s) => ({ params: { slug: s.id }, props: { servico: s } }));
+}
+
+const { servico } = Astro.props;
+const d = servico.data;
+const url = `/servicos/${servico.id}/`;
+const trilha = [
+  { nome: 'Serviços', href: '/servicos/' },
+  { nome: d.titulo, href: url },
+];
+
+const relacionados = (await getCollection('servicos'))
+  .filter((s) => s.data.grupo === d.grupo && s.id !== servico.id)
+  .sort((a, b) => a.data.ordem - b.data.ordem);
+const obras = (await getCollection('obras'))
+  .filter((o) => o.data.servicos.includes(servico.id))
+  .sort((a, b) => a.data.ordem - b.data.ordem)
+  .slice(0, 2);
+
+const mensagem = `Olá! Gostaria de um orçamento de ${d.titulo.toLowerCase()}.`;
+
+const faqSchema = semPlaceholder(d.faq);
+const schemas = [
+  breadcrumb(trilha),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: d.titulo,
+    serviceType: d.titulo,
+    description: d.metaDescription,
+    url: new URL(url, empresa.url).href,
+    provider: { '@id': `${empresa.url}/#empresa` },
+    areaServed: empresa.areaAtendida.map((nome) => ({ '@type': 'Place', name: nome })),
+  },
+  ...(faqSchema.length ? [faqPage(faqSchema)] : []),
+];
+---
+<Base title={d.metaTitle} description={d.metaDescription} schemas={schemas}>
+  <CabecalhoPagina
+    rotulo={d.grupo === 'topografia' ? 'Topografia' : 'Projetos'}
+    titulo={`${d.titulo} em Varginha e Sul de Minas`}
+    subtitulo={d.resumo}
+    trilha={trilha}
+  />
+
+  <section class="secao">
+    <div class="wrap doc">
+      <article>
+        <section class="doc-secao">
+          <h2><span class="mono">01</span>O que é</h2>
+          <p set:html={marcar(d.oQueE)} />
+        </section>
+
+        <section class="doc-secao">
+          <h2><span class="mono">02</span>Quando você precisa</h2>
+          <ul class="lista-marco">
+            {d.quandoPrecisa.map((item) => <li set:html={marcar(item)} />)}
+          </ul>
+        </section>
+
+        <section class="doc-secao">
+          <h2><span class="mono">03</span>Como funciona</h2>
+          <ol class="passos">
+            {d.comoFunciona.map((item) => <li><span set:html={marcar(item)} /></li>)}
+          </ol>
+        </section>
+
+        <section class="doc-secao">
+          <h2><span class="mono">04</span>O que você recebe</h2>
+          <ul class="lista-marco">
+            {d.entregaveis.map((item) => <li set:html={marcar(item)} />)}
+          </ul>
+        </section>
+
+        <section class="doc-secao">
+          <h2><span class="mono">05</span>Perguntas frequentes</h2>
+          <Faq itens={d.faq} />
+        </section>
+      </article>
+
+      <aside class="lateral">
+        <div class="caixa caixa-azul">
+          <span class="caixa-rot">Orçamento</span>
+          <h2>{d.titulo}</h2>
+          <p>Mande a localização e a área aproximada. Respondemos pelo WhatsApp.</p>
+          <a href={linkWhatsApp(mensagem)} class="btn-orcamento" target="_blank" rel="noopener">Pedir orçamento <span class="seta" aria-hidden="true">→</span></a>
+        </div>
+        <div class="caixa">
+          <span class="caixa-rot">Prazo</span>
+          <p>Definido no orçamento, conforme a área, o acesso e o escopo do trabalho.</p>
+        </div>
+        <div class="caixa">
+          <span class="caixa-rot">Outros serviços de {d.grupo === 'topografia' ? 'topografia' : 'projetos'}</span>
+          <ul>
+            {relacionados.map((s) => <li><a href={`/servicos/${s.id}/`}>{s.data.titulo}</a></li>)}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {obras.length > 0 && (
+    <section class="secao secao-papel">
+      <div class="wrap">
+        <header class="secao-cab"><p class="secao-rot"><span>→</span>Obras com este serviço</p></header>
+        <div class="obras">
+          {obras.map((o, i) => <CardObra obra={o} indice={i + 2} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ChamadaWhatsApp titulo={`Orçamento de ${d.titulo.toLowerCase()}`} mensagem={mensagem} />
+</Base>

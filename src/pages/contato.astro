@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import CabecalhoPagina from '../components/CabecalhoPagina.astro';
+import FormOrcamento from '../components/FormOrcamento.astro';
+import { empresa } from '../data/empresa';
+import { breadcrumb } from '../data/schema';
+
+const trilha = [{ nome: 'Contato', href: '/contato/' }];
+const { endereco } = empresa;
+const enderecoCompleto = `${endereco.rua}, ${endereco.bairro}, ${endereco.cidade}/${endereco.uf}, CEP ${endereco.cep}`;
+
+// "Como chegar"
+const referencia = 'Ao lado da Igreja do Rosário.';
+
+const destino = encodeURIComponent(enderecoCompleto);
+const linkGoogleMaps = `https://www.google.com/maps/dir/?api=1&destination=${destino}`;
+const linkWaze = `https://waze.com/ul?q=${destino}&navigate=yes`;
+---
+<Base
+  title="Contato e Orçamento | XPRO Topografia em Varginha – MG"
+  description="Peça um orçamento de topografia, georreferenciamento ou projeto à XPRO. WhatsApp (35) 99740-4241, Praça Melo Viana, 168 C, Centro, Varginha – MG."
+  schemas={[breadcrumb(trilha)]}
+>
+  <CabecalhoPagina
+    rotulo="Orçamento"
+    titulo="Conte o que precisa medir ou projetar."
+    subtitulo="Respondemos em horário comercial, de segunda a sexta."
+    trilha={trilha}
+  />
+
+  <section class="secao">
+    <div class="wrap orc">
+      <div class="orc-info orc-info-claro">
+        <p>Para um orçamento preciso, informe a localização, a área aproximada e, se tiver, a matrícula do imóvel.</p>
+        <dl>
+          <div><dt>WhatsApp e telefone</dt><dd><a href={`tel:${empresa.telefones[0].e164}`}>{empresa.telefones[0].exibicao}</a></dd></div>
+          <div><dt>E-mail</dt><dd><a href={`mailto:${empresa.email}`}>{empresa.email}</a></dd></div>
+          <div><dt>Escritório</dt><dd>{endereco.rua}, {endereco.bairro}<br>{endereco.cidade}/{endereco.uf}</dd></div>
+          <div><dt>Horário</dt><dd>{empresa.horario.texto}</dd></div>
+        </dl>
+      </div>
+      <FormOrcamento claro />
+    </div>
+  </section>
+
+  <section class="secao secao-papel secao-chegar" aria-labelledby="chegar-titulo">
+    <div class="wrap">
+      <p class="chegar-rot">Como chegar</p>
+      <h2 id="chegar-titulo" class="chegar-titulo">Estamos no Centro de Varginha</h2>
+      <div class="chegar">
+        <div class="chegar-info">
+          <dl>
+            <div><dt>Endereço</dt><dd>{enderecoCompleto}</dd></div>
+            <div><dt>Ponto de referência</dt><dd>{referencia}</dd></div>
+          </dl>
+          <div class="chegar-acoes">
+            <a class="btn-orcamento" href={linkGoogleMaps} target="_blank" rel="noopener">Abrir no Google Maps <span class="seta" aria-hidden="true">→</span></a>
+            <a class="btn-orcamento" href={linkWaze} target="_blank" rel="noopener">Abrir no Waze <span class="seta" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="chegar-mapa">
+          <iframe
+            class="mapa-frame"
+            title={`Mapa com a localização do escritório da XPRO: ${enderecoCompleto}`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src={`https://www.google.com/maps?q=${destino}&output=embed`}
+          ></iframe>
+          <button type="button" class="mapa-trava" aria-label="Ativar o mapa para mover e dar zoom">
+            <span>Toque para usar o mapa</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // No celular, o mapa só recebe toques depois que a pessoa ativa; assim a rolagem da página não fica presa nele.
+    const trava = document.querySelector<HTMLButtonElement>('.mapa-trava');
+    trava?.addEventListener('click', () => trava.remove());
+  </script>
+</Base>

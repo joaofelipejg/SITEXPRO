@@ -1,0 +1,58 @@
+---
+// Fundo de curvas de nível gerado no build (sem imagem, sem biblioteca).
+// animar=true: as curvas se desenham uma vez ao carregar a página.
+import { gerarContornos } from '../lib/contornos';
+
+interface Props {
+  largura?: number;
+  altura?: number;
+  semente?: number;
+  animar?: boolean;
+  class?: string;
+}
+
+const { largura = 1600, altura = 900, semente = 11, animar = false, class: classe = '' } = Astro.props;
+const curvas = gerarContornos({ largura, altura, semente, passo: 10, niveis: 34 });
+---
+<svg
+  class:list={['contornos', classe, { animar }]}
+  viewBox={`0 0 ${largura} ${altura}`}
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  {curvas.map((c) => (
+    <path
+      d={c.d}
+      class:list={['curva', { mestra: c.mestra }]}
+      style={`--n:${c.nivel}`}
+    />
+  ))}
+  {curvas.filter((c) => c.rotulo).map((c) => (
+    <text
+      class="cota"
+      x={c.rotulo!.x.toFixed(1)}
+      y={c.rotulo!.y.toFixed(1)}
+      transform={`rotate(${c.rotulo!.angulo.toFixed(1)} ${c.rotulo!.x.toFixed(1)} ${c.rotulo!.y.toFixed(1)})`}
+      style={`--n:${c.nivel}`}
+    >{c.cota}</text>
+  ))}
+</svg>
+{animar && (
+  <script is:inline>
+    // Mede o comprimento real de cada curva (getTotalLength) para o traço da animação.
+    // Com vector-effect: non-scaling-stroke o tracejado segue a escala da tela, então o
+    // valor é multiplicado pela escala (mín. 1) com folga. Sem este script, as curvas
+    // aparecem completas, sem animação.
+    (function () {
+      var svg = document.currentScript && document.currentScript.previousElementSibling;
+      if (!svg || !svg.classList.contains('contornos')) return;
+      var ctm = svg.getScreenCTM();
+      var k = Math.max(1, ctm ? ctm.a : 1) * 1.05;
+      svg.querySelectorAll('.curva').forEach(function (p) {
+        p.style.setProperty('--L', (p.getTotalLength() * k + 4).toFixed(1));
+      });
+      svg.classList.add('medido');
+    })();
+  </script>
+)}
