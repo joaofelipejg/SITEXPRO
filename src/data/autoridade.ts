@@ -38,13 +38,19 @@ export const listaNrs = (() => {
   return c.length > 1 ? `${c.slice(0, -1).join(', ')} e ${c[c.length - 1]}` : c.join('');
 })();
 
-/** Itens de regularização do drone que têm dado (os sem dado ficam de fora) */
-export const registrosDrone = (() => {
+/** Linha do card do drone: "Regularizado na ANAC, ANATEL e DECEA." (só os órgãos com dado) */
+export const droneRegularizado = (() => {
   const d = autoridade.drone;
-  const itens: string[] = [];
-  if (d.cadastroAnac) itens.push(d.numeroSisant ? `Aeronave cadastrada na ANAC (SISANT nº ${d.numeroSisant})` : 'Aeronave cadastrada na ANAC (SISANT)');
-  if (d.homologacaoAnatel) itens.push('Equipamento homologado pela ANATEL');
-  if (d.pilotoCertificado) itens.push('Piloto certificado');
-  if (d.voosDecea) itens.push('Voos autorizados pelo DECEA (SARPAS)');
-  return itens;
+  const orgaos = [d.cadastroAnac && 'ANAC', d.homologacaoAnatel && 'ANATEL', d.voosDecea && 'DECEA'].filter(Boolean) as string[];
+  if (orgaos.length === 0) return null;
+  const lista = orgaos.length > 1 ? `${orgaos.slice(0, -1).join(', ')} e ${orgaos[orgaos.length - 1]}` : orgaos[0];
+  return `Regularizado na ${lista}.`;
+})();
+
+/** Linha do card ANAC: "Aeronave SISANT nº ... · Piloto certificado" (partes sem dado ficam de fora) */
+export const linhaAnac = (() => {
+  const d = autoridade.drone;
+  const partes = [d.numeroSisant && `Aeronave SISANT nº ${d.numeroSisant}`, d.pilotoCertificado && 'Piloto certificado'].filter(Boolean);
+  // sem número nem piloto informados: só o que é certo (cadastro no SISANT)
+  return partes.length > 0 ? partes.join(' · ') : 'Aeronave cadastrada no SISANT';
 })();

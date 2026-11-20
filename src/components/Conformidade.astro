@@ -3,8 +3,14 @@
 // Dados em src/data/autoridade.ts; o que estiver sem dado (null) não aparece.
 // Ícones genéricos desenhados aqui (sem logos oficiais da ABNT, ANAC ou DECEA).
 import SecaoCab from './SecaoCab.astro';
-import { autoridade, listaNrs } from '../data/autoridade';
+import { autoridade, linhaAnac } from '../data/autoridade';
+import { linkWhatsApp } from '../data/empresa';
 
+interface Props {
+  /** número da seção na home (selo "05") */
+  num?: string;
+}
+const { num } = Astro.props;
 const { norma, drone } = autoridade;
 
 const cards = [
@@ -13,18 +19,16 @@ const cards = [
     titulo: norma.codigo,
     linha: autoridade.equipamentosCalibrados ? `${norma.descricao}, com equipamentos calibrados` : norma.descricao,
   },
-  { icone: 'capacete', titulo: `NRs ${listaNrs.replace(/NR-/g, '')}`, linha: 'Equipe treinada para obra e indústria' },
-  drone.cadastroAnac && {
-    icone: 'drone',
-    titulo: 'ANAC',
-    linha: drone.pilotoCertificado ? 'Drone cadastrado e piloto certificado' : 'Drone cadastrado no SISANT',
-  },
-  drone.voosDecea && { icone: 'aviao', titulo: 'DECEA', linha: 'Voos autorizados no espaço aéreo' },
+  { icone: 'capacete', titulo: 'NR-18 e NR-35', linha: 'Também NR-1, 6 e 7. Equipe liberada para obra, altura e área industrial.' },
+  drone.cadastroAnac && { icone: 'drone', titulo: 'ANAC', linha: linhaAnac },
+  drone.voosDecea && { icone: 'aviao', titulo: 'DECEA', linha: 'Voos solicitados no SARPAS antes de cada missão' },
 ].filter(Boolean) as { icone: string; titulo: string; linha: string }[];
+
+const linkDocumentacao = linkWhatsApp('Olá, preciso da documentação de segurança da equipe XPRO para integração na minha obra/empresa.');
 ---
-<section class="secao secao-azul" id="conformidade" aria-labelledby="conformidade-titulo">
+<section class="secao secao-azul secao-compacta" id="conformidade" aria-labelledby="conformidade-titulo">
   <div class="wrap">
-    <SecaoCab rotulo="Normas e segurança" titulo="Conformidade técnica e segurança em campo" id="conformidade-titulo">
+    <SecaoCab num={num} rotulo="Normas e segurança" titulo="Conformidade técnica e segurança em campo" id="conformidade-titulo">
       <p>Trabalhamos dentro das normas que construtoras, indústrias e cartórios exigem. Nossa equipe entra em obra e em área industrial com a documentação de segurança em dia.</p>
     </SecaoCab>
     <ul class="conformidade">
@@ -62,5 +66,8 @@ const cards = [
         </li>
       ))}
     </ul>
+    <a href={linkDocumentacao} target="_blank" rel="noopener" class="btn-orcamento btn-secundario btn-claro conformidade-acao">
+      Solicitar documentação para integração <span class="seta" aria-hidden="true">→</span>
+    </a>
   </div>
 </section>

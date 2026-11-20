@@ -11,7 +11,7 @@ import MapaAtuacao from '../components/MapaAtuacao.astro';
 import FormOrcamento from '../components/FormOrcamento.astro';
 import Conformidade from '../components/Conformidade.astro';
 import { empresa, linkWhatsApp, grausMinutos, listaCidades } from '../data/empresa';
-import { autoridade, listaNrs, registrosDrone } from '../data/autoridade';
+import { autoridade, listaNrs, droneRegularizado } from '../data/autoridade';
 import { marcar } from '../data/texto';
 import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
 import fotoEstacao from '../assets/fotos/estacao-total-obra.jpg';
@@ -40,7 +40,7 @@ const etapas = [
 const equipamentos = [
   { tipo: 'Receptor GNSS RTK', diretriz: 'Posicionamento geodésico de alta precisão com correção em tempo real.', uso: 'Georreferenciamento, levantamentos em área aberta, locação.' },
   { tipo: 'Estação total', diretriz: 'Medição óptica de alta exatidão angular e linear.', uso: 'Áreas urbanas, obras, locação de estruturas e pontos sob cobertura.' },
-  { tipo: 'Drone (RPA)', diretriz: 'Aerofotogrametria com alta densidade de pontos e ortorretificação.', uso: 'Ortofoto, modelo digital do terreno e volumes em áreas extensas.', registros: registrosDrone },
+  { tipo: 'Drone (RPA)', diretriz: 'Aerofotogrametria com alta densidade de pontos e ortorretificação.', uso: 'Ortofoto, modelo digital do terreno e volumes em áreas extensas.', regularizacao: droneRegularizado },
   { tipo: 'Escritório técnico', diretriz: 'Processamento dos dados de campo, conferência técnica e elaboração das plantas em CAD.', uso: 'Planta, modelo do terreno e projeto prontos para a obra e para aprovação.' },
 ];
 ---
@@ -163,11 +163,7 @@ const equipamentos = [
                   <div><dt>Especificação</dt><dd class="ficha-equip-espec">{e.diretriz}</dd></div>
                   <div><dt>Aplicação</dt><dd>{e.uso}</dd></div>
                 </dl>
-                {e.registros && e.registros.length > 0 && (
-                  <ul class="ficha-equip-registros" aria-label="Regularização do drone">
-                    {e.registros.map((r) => <li>{r}</li>)}
-                  </ul>
-                )}
+                {e.regularizacao && <p class="ficha-equip-registros">{e.regularizacao}</p>}
               </li>
             ))}
           </ul>
@@ -176,13 +172,13 @@ const equipamentos = [
     </div>
   </section>
 
-  <!-- 5b. CONFORMIDADE E SEGURANÇA (bloco sem número, logo após Equipamentos) -->
-  <Conformidade />
+  <!-- 5b. CONFORMIDADE E SEGURANÇA (seção 05, logo após Equipamentos) -->
+  <Conformidade num="05" />
 
   <!-- 6. ÁREA DE ATUAÇÃO ================================================= -->
   <section class="secao" id="area">
     <div class="wrap">
-      <SecaoCab num="05" rotulo="Área de atuação" titulo="Base em Varginha, campo em todo o Sul de Minas." />
+      <SecaoCab num="06" rotulo="Área de atuação" titulo="Base em Varginha, campo em todo o Sul de Minas." />
       <div class="area">
         <MapaAtuacao />
         <div>
@@ -202,7 +198,7 @@ const equipamentos = [
   <!-- 7. ORÇAMENTO ======================================================= -->
   <section class="secao secao-azul" id="orcamento">
     <div class="wrap">
-      <SecaoCab num="06" rotulo="Orçamento" titulo="Conte o que precisa medir ou projetar." />
+      <SecaoCab num="07" rotulo="Orçamento" titulo="Conte o que precisa medir ou projetar." />
       <div class="orc">
         <div class="orc-info">
           <p>Quanto mais detalhe, mais preciso o orçamento: localização, área aproximada e, se tiver, a matrícula do imóvel.</p>

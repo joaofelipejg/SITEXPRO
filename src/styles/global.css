@@ -251,7 +251,7 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .foto-canto::before, .foto-canto::after { content: ""; position: absolute; width: 14px; height: 14px; border: 0 solid var(--azul); z-index: 1; }
 .foto-canto::before { top: 8px; left: 8px; border-top-width: 2px; border-left-width: 2px; }
 .foto-canto::after { bottom: 8px; right: 8px; border-bottom-width: 2px; border-right-width: 2px; }
-.foto figcaption, .legenda { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; color: var(--tinta-suave); margin-top: 10px; }
+.foto figcaption, .legenda { font-family: var(--f-mono); font-size: .8125rem; letter-spacing: .04em; line-height: 1.5; color: var(--tinta); margin-top: 10px; }
 
 /* --- Fotos de campo ---------------------------------------------------- */
 .fotos-campo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -327,9 +327,7 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .ficha-equip-item dd { font-size: .95rem; line-height: 1.5; color: var(--tinta); }
 .ficha-equip-item .ficha-equip-espec { color: var(--tinta-suave); }
 /* Regularização do drone (lista curta abaixo da descrição do card) */
-.ficha-equip-registros { display: grid; gap: 6px; padding-top: 12px; border-top: 1px dashed var(--linha); font-size: .875rem; line-height: 1.45; color: var(--tinta); }
-.ficha-equip-registros li { position: relative; padding-left: 20px; }
-.ficha-equip-registros li::before { content: "✓"; position: absolute; left: 0; font-weight: 700; color: var(--azul); }
+.ficha-equip-registros { padding-top: 12px; border-top: 1px dashed var(--linha); font-size: .9rem; line-height: 1.45; font-weight: 500; color: var(--tinta); }
 
 /* --- Conformidade e segurança (bloco após Equipamentos) --------------- */
 .conformidade { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--linha-azul); }
@@ -337,7 +335,13 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .conformidade-item + .conformidade-item { padding-left: 24px; border-left: 1px solid var(--linha-azul); }
 .conformidade-icone { width: 32px; height: 32px; color: var(--amarelo); }
 .conformidade-item h3 { font-size: 1.2rem; line-height: 1.25; color: var(--sobre-azul); }
-.conformidade-item p { color: var(--sobre-azul-suave); font-size: .95rem; max-width: 32ch; }
+.conformidade-item p { color: var(--sobre-azul-suave); font-size: .95rem; line-height: 1.5; max-width: 34ch; }
+.conformidade-acao { margin-top: clamp(28px, 3vw, 40px); }
+/* Seção mais baixa que as outras (~30% menos espaço em cima e embaixo) */
+.secao-compacta { padding-block: calc(var(--secao) * .7); }
+/* Botão secundário sobre fundo escuro: texto branco, borda amarela */
+.btn-secundario.btn-claro { color: var(--sobre-azul); }
+.btn-secundario.btn-claro:hover { color: var(--azul); }
 .tabela { width: 100%; border-collapse: collapse; }
 .tabela caption { text-align: left; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-suave); padding-bottom: 12px; }
 .tabela th, .tabela td { text-align: left; vertical-align: top; padding: 18px 16px 18px 0; border-top: 1px solid var(--linha); }
@@ -682,6 +686,7 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
   .conformidade { grid-template-columns: 1fr; }
   .conformidade-item, .conformidade-item + .conformidade-item { padding: 24px 0 16px; border-left: 0; }
   .conformidade-item + .conformidade-item { border-top: 1px solid var(--linha-azul); }
+  .conformidade-acao { width: 100%; white-space: normal; text-align: center; }
   .equip .fotos-equipe { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .equip .fotos-equipe .foto-destaque { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 4.6; }
   .equip .fotos-equipe .foto:not(.foto-destaque) { aspect-ratio: 1 / 1; }
