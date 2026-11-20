@@ -225,3 +225,26 @@ const equipamentos = [
     </div>
   </section>
 </Base>
+
+<script>
+  // Mira e leitura de coordenadas que seguem o ponteiro no hero (só com mouse).
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const saida = document.querySelector<HTMLElement>('[data-coord]');
+  if (hero && saida && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    // Centro vem de empresa.coordenadas (atributos data-lat/data-lon do hero).
+    const centro = { lat: Number(hero.dataset.lat), lon: Number(hero.dataset.lon) };
+    const fmt = (v: number, eixo: 'lat' | 'lon') => {
+      const h = eixo === 'lat' ? (v < 0 ? 'S' : 'N') : (v < 0 ? 'W' : 'E');
+      const a = Math.abs(v), g = Math.floor(a), mTot = (a - g) * 60, m = Math.floor(mTot), s = Math.round((mTot - m) * 60);
+      return `${g}°${String(m).padStart(2, '0')}′${String(s).padStart(2, '0')}″${h}`;
+    };
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+      hero.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      hero.style.setProperty('--my', `${e.clientY - r.top}px`);
+      const lat = centro.lat + (0.5 - fy) * 0.06, lon = centro.lon + (fx - 0.5) * 0.1;
+      saida.textContent = `${fmt(lat, 'lat')} · ${fmt(lon, 'lon')}`;
+    });
+  }
+</script>
