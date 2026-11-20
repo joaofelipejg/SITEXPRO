@@ -111,12 +111,13 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .cab-tel { font-family: var(--f-mono); font-size: .85rem; text-decoration: none; color: var(--sobre-azul-suave); }
 .cab-tel:hover { color: var(--amarelo); }
 .cab-menu-btn { display: none; align-items: center; gap: 10px; background: none; border: 1px solid var(--linha-azul); padding: 8px 12px; cursor: pointer; font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
-.cab-menu-ico { position: relative; width: 16px; height: 10px; }
-.cab-menu-ico::before, .cab-menu-ico::after { content: ""; position: absolute; left: 0; width: 16px; height: 2px; background: currentColor; transition: transform .25s, top .25s; }
+.cab-menu-ico { position: relative; width: 20px; height: 14px; background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat; transition: background-size .2s; }
+.cab-menu-ico::before, .cab-menu-ico::after { content: ""; position: absolute; left: 0; width: 20px; height: 2px; background: currentColor; transition: transform .25s, top .25s; }
 .cab-menu-ico::before { top: 0; }
-.cab-menu-ico::after { top: 8px; }
-.menu-aberto .cab-menu-ico::before { top: 4px; transform: rotate(45deg); }
-.menu-aberto .cab-menu-ico::after { top: 4px; transform: rotate(-45deg); }
+.cab-menu-ico::after { top: 12px; }
+.menu-aberto .cab-menu-ico { background-size: 0 2px; }
+.menu-aberto .cab-menu-ico::before { top: 6px; transform: rotate(45deg); }
+.menu-aberto .cab-menu-ico::after { top: 6px; transform: rotate(-45deg); }
 
 /* --- Hero -------------------------------------------------------------- */
 .hero { position: relative; isolation: isolate; background: var(--azul); color: var(--sobre-azul); overflow: hidden; min-height: calc(100svh - var(--cab-altura)); display: grid; grid-template-rows: 1fr auto; }
@@ -615,12 +616,14 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 @media (max-width: 640px) {
   .ficha-equip-lista { grid-template-columns: 1fr; grid-auto-rows: auto; }
   .ficha-equip-item, .ficha-equip-item:nth-child(even) { padding: 20px 0; border-left: 0; }
-  :root { --cab-altura: 72px; }
+  :root { --cab-altura: 60px; }
   body { font-size: 1rem; }
   .cab-inner { gap: 12px; }
-  .cab-marca img { width: 140px; }
+  .cab-marca img { width: 112px; }
   .cab-acoes { gap: 8px; margin-left: auto; }
-  .cab-acoes .btn-orcamento { padding: 12px 16px; font-size: .78rem; }
+  .cab-acoes .btn-orcamento { padding: 9px 12px; font-size: .6875rem; letter-spacing: .06em; }
+  .cab-acoes .btn-orcamento .seta { display: none; }
+  .cab-menu-btn { border: 0; width: 40px; height: 40px; padding: 0; justify-content: center; margin-right: -8px; }
   .so-desktop { display: none; }
   .cab-menu-txt { display: none; }
   .hero { min-height: auto; }
