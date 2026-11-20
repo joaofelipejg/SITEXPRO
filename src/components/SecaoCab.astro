@@ -1,7 +1,8 @@
 ---
 // Cabeçalho de seção no estilo de prancha: rótulo numerado + título + texto de apoio.
 interface Props {
-  num: string;
+  /** número da seção (01, 02...); sem número para blocos fora da sequência numerada */
+  num?: string;
   rotulo: string;
   titulo: string;
   id?: string;
@@ -10,7 +11,7 @@ interface Props {
 const { num, rotulo, titulo, id } = Astro.props;
 ---
 <header class="secao-cab">
-  <p class="secao-rot"><span>{num}</span>{rotulo}</p>
+  <p class="secao-rot">{num && <span>{num}</span>}{rotulo}</p>
   <h2 id={id}>{titulo}</h2>
   {Astro.slots.has('default') && <div class="secao-apoio"><slot /></div>}
 </header>

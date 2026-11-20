@@ -135,7 +135,7 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .hero-acoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(28px, 4vw, 44px); }
 
 .hero-faixa { position: relative; border-top: 1px solid var(--linha-azul); background: color-mix(in srgb, var(--azul-profundo) 70%, transparent); backdrop-filter: none; }
-.hero-faixa dl { display: grid; grid-template-columns: 3fr 1fr; }
+.hero-faixa dl { display: grid; grid-template-columns: 2fr 1fr 1.4fr; }
 .hero-faixa div { padding: 18px 20px 20px; border-left: 1px solid var(--linha-azul); }
 .hero-faixa div:first-child { border-left: 0; padding-left: 0; }
 .hero-faixa dt { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--amarelo); margin-bottom: 6px; }
@@ -326,6 +326,18 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .ficha-equip-item dt { font-family: var(--f-mono); font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-suave); margin-bottom: 4px; }
 .ficha-equip-item dd { font-size: .95rem; line-height: 1.5; color: var(--tinta); }
 .ficha-equip-item .ficha-equip-espec { color: var(--tinta-suave); }
+/* Regularização do drone (lista curta abaixo da descrição do card) */
+.ficha-equip-registros { display: grid; gap: 6px; padding-top: 12px; border-top: 1px dashed var(--linha); font-size: .875rem; line-height: 1.45; color: var(--tinta); }
+.ficha-equip-registros li { position: relative; padding-left: 20px; }
+.ficha-equip-registros li::before { content: "✓"; position: absolute; left: 0; font-weight: 700; color: var(--azul); }
+
+/* --- Conformidade e segurança (bloco após Equipamentos) --------------- */
+.conformidade { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--linha-azul); }
+.conformidade-item { display: grid; align-content: start; gap: 10px; padding: 28px 24px 8px 0; }
+.conformidade-item + .conformidade-item { padding-left: 24px; border-left: 1px solid var(--linha-azul); }
+.conformidade-icone { width: 32px; height: 32px; color: var(--amarelo); }
+.conformidade-item h3 { font-size: 1.2rem; line-height: 1.25; color: var(--sobre-azul); }
+.conformidade-item p { color: var(--sobre-azul-suave); font-size: .95rem; max-width: 32ch; }
 .tabela { width: 100%; border-collapse: collapse; }
 .tabela caption { text-align: left; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-suave); padding-bottom: 12px; }
 .tabela th, .tabela td { text-align: left; vertical-align: top; padding: 18px 16px 18px 0; border-top: 1px solid var(--linha); }
@@ -568,6 +580,10 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 /* --- Tablet ------------------------------------------------------------ */
 @media (max-width: 1080px) {
   .clientes { grid-template-columns: repeat(3, 1fr); }
+  /* Conformidade: 2 x 2 no tablet */
+  .conformidade { grid-template-columns: repeat(2, 1fr); }
+  .conformidade-item:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .conformidade-item:nth-child(n + 3) { border-top: 1px solid var(--linha-azul); }
   .cab-tel { display: none; }
   .cab-menu-btn { display: inline-flex; }
   .cab-nav { position: fixed; inset: var(--cab-altura) 0 0 0; background: var(--azul); padding: 24px var(--margem) 32px; display: none; flex-direction: column; justify-content: space-between; overflow-y: auto; }
@@ -662,6 +678,10 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
   .indicadores { grid-template-columns: 1fr; }
   .indicador, .indicador + .indicador { padding: 24px 0 16px; border-left: 0; }
   .indicador + .indicador { border-top: 1px solid var(--linha-azul); }
+  /* Conformidade: 1 coluna no celular */
+  .conformidade { grid-template-columns: 1fr; }
+  .conformidade-item, .conformidade-item + .conformidade-item { padding: 24px 0 16px; border-left: 0; }
+  .conformidade-item + .conformidade-item { border-top: 1px solid var(--linha-azul); }
   .equip .fotos-equipe { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .equip .fotos-equipe .foto-destaque { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 4.6; }
   .equip .fotos-equipe .foto:not(.foto-destaque) { aspect-ratio: 1 / 1; }

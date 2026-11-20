@@ -9,7 +9,9 @@ import CardObra from '../components/CardObra.astro';
 import Foto from '../components/Foto.astro';
 import MapaAtuacao from '../components/MapaAtuacao.astro';
 import FormOrcamento from '../components/FormOrcamento.astro';
+import Conformidade from '../components/Conformidade.astro';
 import { empresa, linkWhatsApp, grausMinutos, listaCidades } from '../data/empresa';
+import { autoridade, listaNrs, registrosDrone } from '../data/autoridade';
 import { marcar } from '../data/texto';
 import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
 import fotoEstacao from '../assets/fotos/estacao-total-obra.jpg';
@@ -26,7 +28,11 @@ const { coordenadas, endereco } = empresa;
 const etapas = [
   { titulo: 'Contato', texto: 'Você manda a localização e conta o que precisa. Pedimos matrícula, projeto ou o que já existir.' },
   { titulo: 'Visita', texto: 'Quando necessário, vamos ao local para reconhecer acesso, divisas e vegetação antes de orçar.' },
-  { titulo: 'Campo', texto: 'Levantamento com GNSS RTK, estação total ou drone, conforme a área e a precisão exigida.' },
+  {
+    titulo: 'Campo',
+    texto: 'Levantamento com GNSS RTK, estação total ou drone, conforme a área e a precisão exigida.'
+      + ` Executado conforme a ${autoridade.norma.codigo}, com equipe treinada em ${listaNrs}.`,
+  },
   { titulo: 'Processamento', texto: 'Os dados viram planta, modelo do terreno e projeto no escritório, com conferência técnica.' },
   { titulo: 'Entrega', texto: 'Arquivos em DWG e PDF, memorial e relatório, com ART do responsável técnico.' },
 ];
@@ -34,7 +40,7 @@ const etapas = [
 const equipamentos = [
   { tipo: 'Receptor GNSS RTK', diretriz: 'Posicionamento geodésico de alta precisão com correção em tempo real.', uso: 'Georreferenciamento, levantamentos em área aberta, locação.' },
   { tipo: 'Estação total', diretriz: 'Medição óptica de alta exatidão angular e linear.', uso: 'Áreas urbanas, obras, locação de estruturas e pontos sob cobertura.' },
-  { tipo: 'Drone (RPA)', diretriz: 'Aerofotogrametria com alta densidade de pontos e ortorretificação.', uso: 'Ortofoto, modelo digital do terreno e volumes em áreas extensas.' },
+  { tipo: 'Drone (RPA)', diretriz: 'Aerofotogrametria com alta densidade de pontos e ortorretificação.', uso: 'Ortofoto, modelo digital do terreno e volumes em áreas extensas.', registros: registrosDrone },
   { tipo: 'Escritório técnico', diretriz: 'Processamento dos dados de campo, conferência técnica e elaboração das plantas em CAD.', uso: 'Planta, modelo do terreno e projeto prontos para a obra e para aprovação.' },
 ];
 ---
@@ -69,6 +75,9 @@ const equipamentos = [
       <dl class="wrap">
         <div><dt>Cidades atendidas</dt><dd>{listaCidades}</dd></div>
         <div><dt>Base</dt><dd>{endereco.cidade}/{endereco.uf} · desde {empresa.fundacao}</dd></div>
+        {autoridade.nrs.length > 0 && autoridade.drone.cadastroAnac && (
+          <div><dt>Segurança</dt><dd>Equipe com NRs e drone regularizado na ANAC</dd></div>
+        )}
       </dl>
     </div>
   </section>
@@ -154,6 +163,11 @@ const equipamentos = [
                   <div><dt>Especificação</dt><dd class="ficha-equip-espec">{e.diretriz}</dd></div>
                   <div><dt>Aplicação</dt><dd>{e.uso}</dd></div>
                 </dl>
+                {e.registros && e.registros.length > 0 && (
+                  <ul class="ficha-equip-registros" aria-label="Regularização do drone">
+                    {e.registros.map((r) => <li>{r}</li>)}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
@@ -161,6 +175,9 @@ const equipamentos = [
       </div>
     </div>
   </section>
+
+  <!-- 5b. CONFORMIDADE E SEGURANÇA (bloco sem número, logo após Equipamentos) -->
+  <Conformidade />
 
   <!-- 6. ÁREA DE ATUAÇÃO ================================================= -->
   <section class="secao" id="area">
