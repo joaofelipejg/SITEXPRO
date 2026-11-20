@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import CabecalhoPagina from '../components/CabecalhoPagina.astro';
 import ChamadaWhatsApp from '../components/ChamadaWhatsApp.astro';
-import GradeClientes from '../components/GradeClientes.astro';
 import Indicadores from '../components/Indicadores.astro';
 import SecaoCab from '../components/SecaoCab.astro';
 import Foto from '../components/Foto.astro';
@@ -53,14 +52,7 @@ const trilha = [{ nome: 'Sobre', href: '/sobre/' }];
     </div>
   </section>
 
-  <section class="secao secao-papel" aria-labelledby="clientes-titulo">
-    <div class="wrap">
-      <SecaoCab num="02" rotulo="Clientes" titulo="Quem já trabalhou com a X Pro." id="clientes-titulo" />
-      <GradeClientes />
-    </div>
-  </section>
-
-  <Indicadores num="03" />
+  <Indicadores num="02" />
 
   <ChamadaWhatsApp />
 </Base>
