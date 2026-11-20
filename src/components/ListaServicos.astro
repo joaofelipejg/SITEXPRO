@@ -29,7 +29,7 @@ const blocos = [
       <p class="bloco-desc">{b.desc}</p>
       <div>
         {b.itens.slice(0, 4).map((s, i) => (
-          <details class="item">
+          <details class="item" name="servico-home">
             <summary>
               <span class="item-cod">{b.sigla}-{String(i + 1).padStart(2, '0')}</span>
               <span class="item-nome">{s.data.titulo}</span>
@@ -52,3 +52,15 @@ const blocos = [
     </div>
   ))}
 </div>
+
+<script>
+  // Um serviço aberto por vez (nos dois blocos). O atributo name="servico-home" já faz isso
+  // nos navegadores novos; este script garante o mesmo nos mais antigos.
+  const itens = document.querySelectorAll<HTMLDetailsElement>('.servicos details.item');
+  itens.forEach((d) => {
+    d.addEventListener('toggle', () => {
+      if (!d.open) return;
+      itens.forEach((outro) => { if (outro !== d && outro.open) outro.open = false; });
+    });
+  });
+</script>
