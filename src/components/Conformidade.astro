@@ -8,7 +8,11 @@ import { autoridade, listaNrs } from '../data/autoridade';
 const { norma, drone } = autoridade;
 
 const cards = [
-  { icone: 'norma', titulo: norma.codigo, linha: norma.descricao },
+  {
+    icone: 'norma',
+    titulo: norma.codigo,
+    linha: autoridade.equipamentosCalibrados ? `${norma.descricao}, com equipamentos calibrados` : norma.descricao,
+  },
   { icone: 'capacete', titulo: `NRs ${listaNrs.replace(/NR-/g, '')}`, linha: 'Equipe treinada para obra e indústria' },
   drone.cadastroAnac && {
     icone: 'drone',
