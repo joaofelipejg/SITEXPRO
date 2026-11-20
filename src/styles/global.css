@@ -284,6 +284,8 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .cliente:hover .cliente-logo img { filter: none; opacity: 1; }
 .cliente-nome { font-family: var(--f-titulo); font-weight: 600; font-size: 1.15rem; line-height: 1.2; color: var(--tinta); }
 .cliente-seg { font-family: var(--f-mono); font-size: .8125rem; font-weight: 600; letter-spacing: .04em; color: var(--tinta-suave); }
+/* Home: título discreto acima da grade de clientes (sem selo numerado) */
+.clientes-titulo { margin-bottom: 20px; font-weight: 600; color: var(--tinta-suave); }
 @media (prefers-reduced-motion: reduce) { .cliente-logo img { transition: none; } }
 
 .faixa-foto { position: relative; isolation: isolate; height: clamp(320px, 52vw, 680px); overflow: hidden; background: var(--azul); }

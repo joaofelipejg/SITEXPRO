@@ -1,0 +1,31 @@
+---
+// Seção "Capacidade técnica em números" (usada na home e na página Sobre).
+import SecaoCab from './SecaoCab.astro';
+
+interface Props {
+  /** número da seção na página (selo) */
+  num?: string;
+}
+const { num } = Astro.props;
+
+// Indicadores do portfólio da XPRO
+const indicadores = [
+  { valor: '+100', rotulo: 'Projetos entregues', desc: 'Para indústrias, incorporadoras, varejo e produtores rurais.' },
+  { valor: '+500', rotulo: 'Hectares levantados', desc: 'Medidos com GNSS RTK e drone, de lotes urbanos a fazendas.' },
+  { valor: '100%', rotulo: 'Com ART registrada', desc: 'Todo serviço sai com ART registrada no CREA-MG.' },
+];
+---
+<section class="secao secao-azul" aria-labelledby="indicadores-titulo">
+  <div class="wrap">
+    <SecaoCab num={num} rotulo="Indicadores" titulo="Capacidade técnica em números." id="indicadores-titulo" />
+    <ul class="indicadores">
+      {indicadores.map((i) => (
+        <li class="indicador">
+          <span class="ind-valor">{i.valor}</span>
+          <span class="ind-rotulo">{i.rotulo}</span>
+          <p>{i.desc}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

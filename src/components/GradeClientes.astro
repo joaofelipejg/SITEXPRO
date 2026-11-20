@@ -1,0 +1,28 @@
+---
+// Grade de clientes (usada na home e na página Sobre). Só a grade: cada página põe o seu título.
+// Para colocar o logo: salve o arquivo em src/assets/clientes/, importe aqui
+// (ex.: import logoCimed from '../assets/clientes/cimed.png';) e preencha "logo".
+// Sem logo, a célula mostra o nome do cliente em texto.
+import { Image } from 'astro:assets';
+
+const clientes: { nome: string; segmento: string; logo?: ImageMetadata }[] = [
+  { nome: 'Cimed', segmento: 'Indústria farmacêutica' },
+  { nome: 'Grupo Boticário', segmento: 'Logística' },
+  { nome: 'Nutrien', segmento: 'Soluções agrícolas' },
+  { nome: 'Andrade FS Incorporadora', segmento: 'Incorporação' },
+  { nome: 'Supermercados Alvorada', segmento: 'Varejo' },
+  { nome: 'Fortgreen', segmento: 'Agronegócio' },
+];
+---
+<ul class="clientes">
+  {clientes.map((c) => (
+    <li class="cliente">
+      <div class="cliente-logo">
+        {c.logo
+          ? <Image src={c.logo} alt={c.nome} height={96} />
+          : <span class="cliente-nome">{c.nome}</span>}
+      </div>
+      <span class="cliente-seg">{c.segmento}</span>
+    </li>
+  ))}
+</ul>

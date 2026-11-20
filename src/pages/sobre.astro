@@ -2,9 +2,10 @@
 import Base from '../layouts/Base.astro';
 import CabecalhoPagina from '../components/CabecalhoPagina.astro';
 import ChamadaWhatsApp from '../components/ChamadaWhatsApp.astro';
+import GradeClientes from '../components/GradeClientes.astro';
+import Indicadores from '../components/Indicadores.astro';
 import SecaoCab from '../components/SecaoCab.astro';
 import Foto from '../components/Foto.astro';
-import { Image } from 'astro:assets';
 import { empresa } from '../data/empresa';
 import { breadcrumb } from '../data/schema';
 import fotoEquipeEstacao from '../assets/fotos/equipe-estacao-total.jpg';
@@ -13,24 +14,6 @@ import fotoEquipeOperador from '../assets/fotos/equipe-operador-gnss.jpg';
 
 const trilha = [{ nome: 'Sobre', href: '/sobre/' }];
 
-// Clientes (nesta ordem). Para colocar o logo: salve o arquivo em src/assets/clientes/,
-// importe no topo (ex.: import logoCimed from '../assets/clientes/cimed.png';) e preencha "logo".
-// Sem logo, a célula mostra o nome do cliente em texto.
-const clientes: { nome: string; segmento: string; logo?: ImageMetadata }[] = [
-  { nome: 'Cimed', segmento: 'Indústria farmacêutica' },
-  { nome: 'Grupo Boticário', segmento: 'Logística' },
-  { nome: 'Nutrien', segmento: 'Soluções agrícolas' },
-  { nome: 'Andrade FS Incorporadora', segmento: 'Incorporação' },
-  { nome: 'Supermercados Alvorada', segmento: 'Varejo' },
-  { nome: 'Fortgreen', segmento: 'Agronegócio' },
-];
-
-// Indicadores do portfólio da XPRO
-const indicadores = [
-  { valor: '+100', rotulo: 'Projetos entregues', desc: 'Projetos executados com rigor técnico e foco na viabilidade de execução em campo.' },
-  { valor: '+500', rotulo: 'Hectares levantados', desc: 'Mapeamentos de alta precisão com tecnologia GNSS RTK e drones profissionais.' },
-  { valor: '100%', rotulo: 'Com ART registrada', desc: 'Segurança técnica e jurídica assegurada em todas as etapas.' },
-];
 ---
 <Base
   title="Sobre a XPRO | Topografia e Projetos em Varginha – MG"
@@ -73,35 +56,11 @@ const indicadores = [
   <section class="secao secao-papel" aria-labelledby="clientes-titulo">
     <div class="wrap">
       <SecaoCab num="02" rotulo="Clientes" titulo="Quem já trabalhou com a X Pro." id="clientes-titulo" />
-      <ul class="clientes">
-        {clientes.map((c) => (
-          <li class="cliente">
-            <div class="cliente-logo">
-              {c.logo
-                ? <Image src={c.logo} alt={c.nome} height={96} />
-                : <span class="cliente-nome">{c.nome}</span>}
-            </div>
-            <span class="cliente-seg">{c.segmento}</span>
-          </li>
-        ))}
-      </ul>
+      <GradeClientes />
     </div>
   </section>
 
-  <section class="secao secao-azul" aria-labelledby="indicadores-titulo">
-    <div class="wrap">
-      <SecaoCab num="03" rotulo="Indicadores" titulo="Capacidade técnica em números." id="indicadores-titulo" />
-      <ul class="indicadores">
-        {indicadores.map((i) => (
-          <li class="indicador">
-            <span class="ind-valor">{i.valor}</span>
-            <span class="ind-rotulo">{i.rotulo}</span>
-            <p>{i.desc}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
+  <Indicadores num="03" />
 
   <ChamadaWhatsApp />
 </Base>

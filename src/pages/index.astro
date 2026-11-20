@@ -10,8 +10,10 @@ import Foto from '../components/Foto.astro';
 import MapaAtuacao from '../components/MapaAtuacao.astro';
 import FormOrcamento from '../components/FormOrcamento.astro';
 import Conformidade from '../components/Conformidade.astro';
+import GradeClientes from '../components/GradeClientes.astro';
+import Indicadores from '../components/Indicadores.astro';
 import { empresa, linkWhatsApp, grausMinutos, listaCidades } from '../data/empresa';
-import { autoridade, listaNrs, droneRegularizado } from '../data/autoridade';
+import { autoridade, droneRegularizado } from '../data/autoridade';
 import { marcar } from '../data/texto';
 import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
 import fotoEstacao from '../assets/fotos/estacao-total-obra.jpg';
@@ -30,8 +32,7 @@ const etapas = [
   { titulo: 'Visita', texto: 'Quando necessário, vamos ao local para reconhecer acesso, divisas e vegetação antes de orçar.' },
   {
     titulo: 'Campo',
-    texto: 'Levantamento com GNSS RTK, estação total ou drone, conforme a área e a precisão exigida.'
-      + ` Executado conforme a ${autoridade.norma.codigo}, com equipe treinada em ${listaNrs}.`,
+    texto: `Levantamento com GNSS RTK, estação total ou drone, conforme a ${autoridade.norma.codigo}.`,
   },
   { titulo: 'Processamento', texto: 'Os dados viram planta, modelo do terreno e projeto no escritório, com conferência técnica.' },
   { titulo: 'Entrega', texto: 'Arquivos em DWG e PDF, memorial e relatório, com ART do responsável técnico.' },
@@ -82,20 +83,31 @@ const equipamentos = [
     </div>
   </section>
 
-  <!-- 2. SERVIÇOS ======================================================== -->
+  <!-- 2. CLIENTES (sem selo numerado) ================================ -->
+  <section class="secao secao-compacta" id="clientes" aria-labelledby="clientes-titulo">
+    <div class="wrap">
+      <h2 class="secao-rot clientes-titulo" id="clientes-titulo">Empresas que já contrataram a XPRO</h2>
+      <GradeClientes />
+    </div>
+  </section>
+
+  <!-- 3. INDICADORES ===================================================== -->
+  <Indicadores num="01" />
+
+  <!-- 4. SERVIÇOS ======================================================== -->
   <section class="secao" id="servicos">
     <div class="wrap">
-      <SecaoCab num="01" rotulo="Serviços" titulo="Serviços de topografia e engenharia civil">
+      <SecaoCab num="02" rotulo="Serviços" titulo="Serviços de topografia e engenharia civil">
         <p>Topografia e projeto no mesmo escritório: o levantamento já sai no formato que o projeto precisa, sem refazer medição entre uma etapa e outra.</p>
       </SecaoCab>
       <ListaServicos />
     </div>
   </section>
 
-  <!-- 3. OBRAS =========================================================== -->
+  <!-- 5. OBRAS =========================================================== -->
   <section class="secao secao-papel" id="obras">
     <div class="wrap">
-      <SecaoCab num="02" rotulo="Obras entregues" titulo="Obras atendidas em Varginha, Pouso Alegre e região">
+      <SecaoCab num="03" rotulo="Obras entregues" titulo="Obras atendidas em Varginha, Pouso Alegre e região">
         <p>Cada obra tem a sua página: local, serviço, o problema do cliente, o que fizemos e o que foi entregue.</p>
       </SecaoCab>
       <div class="obras">
@@ -107,42 +119,13 @@ const equipamentos = [
     </div>
   </section>
 
-  <!-- Faixa de foto: vista aérea feita com drone ---------------------- -->
-  <figure class="faixa-foto">
-    <Image
-      src={fotoDrone}
-      alt="Vista aérea feita com drone de uma terraplenagem em área rural, com platô de terra vermelha cercado por cafezais"
-      widths={[640, 1024, 1600]}
-      sizes="100vw"
-    />
-    <figcaption class="wrap">
-      <span class="secao-rot"><span>RPA</span>Vista aérea</span>
-      <span>Terraplenagem em área rural, registrada com drone.</span>
-    </figcaption>
-  </figure>
+  <!-- 6. CONFORMIDADE E SEGURANÇA ====================================== -->
+  <Conformidade num="04" />
 
-  <!-- 4. COMO TRABALHAMOS =============================================== -->
-  <section class="secao" id="como-trabalhamos">
-    <div class="wrap">
-      <SecaoCab num="03" rotulo="Como trabalhamos" titulo="Cinco etapas, do primeiro contato à ART.">
-        <p>O prazo depende da área, do acesso e do escopo de cada trabalho, e é informado junto com o orçamento.</p>
-      </SecaoCab>
-      <ol class="regua">
-        {etapas.map((e, i) => (
-          <li class="etapa">
-            <span class="etapa-num">{String(i + 1).padStart(2, '0')}</span>
-            <h3>{e.titulo}</h3>
-            <p>{e.texto}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <!-- 5. EQUIPAMENTOS ==================================================== -->
+  <!-- 7. EQUIPAMENTOS ==================================================== -->
   <section class="secao secao-papel" id="equipamentos">
     <div class="wrap">
-      <SecaoCab num="04" rotulo="Equipamentos" titulo="Equipamentos: GNSS RTK, estação total e drone">
+      <SecaoCab num="05" rotulo="Equipamentos" titulo="Equipamentos: GNSS RTK, estação total e drone">
         <p>Equipamento certo para cada área: satélite onde o céu é aberto, estação total onde há obstáculos, drone onde a área é grande.</p>
       </SecaoCab>
       <div class="equip">
@@ -172,13 +155,42 @@ const equipamentos = [
     </div>
   </section>
 
-  <!-- 5b. CONFORMIDADE E SEGURANÇA (seção 05, logo após Equipamentos) -->
-  <Conformidade num="05" />
+  <!-- Faixa de foto: vista aérea feita com drone ---------------------- -->
+  <figure class="faixa-foto">
+    <Image
+      src={fotoDrone}
+      alt="Vista aérea feita com drone de uma terraplenagem em área rural, com platô de terra vermelha cercado por cafezais"
+      widths={[640, 1024, 1600]}
+      sizes="100vw"
+    />
+    <figcaption class="wrap">
+      <span class="secao-rot"><span>RPA</span>Vista aérea</span>
+      <span>Terraplenagem em área rural, registrada com drone.</span>
+    </figcaption>
+  </figure>
 
-  <!-- 6. ÁREA DE ATUAÇÃO ================================================= -->
+  <!-- 8. COMO TRABALHAMOS =============================================== -->
+  <section class="secao" id="como-trabalhamos">
+    <div class="wrap">
+      <SecaoCab num="06" rotulo="Como trabalhamos" titulo="Cinco etapas, do primeiro contato à ART.">
+        <p>O prazo depende da área, do acesso e do escopo de cada trabalho, e é informado junto com o orçamento.</p>
+      </SecaoCab>
+      <ol class="regua">
+        {etapas.map((e, i) => (
+          <li class="etapa">
+            <span class="etapa-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{e.titulo}</h3>
+            <p>{e.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- 9. ÁREA DE ATUAÇÃO ================================================= -->
   <section class="secao" id="area">
     <div class="wrap">
-      <SecaoCab num="06" rotulo="Área de atuação" titulo="Base em Varginha, campo em todo o Sul de Minas." />
+      <SecaoCab num="07" rotulo="Área de atuação" titulo="Base em Varginha, campo em todo o Sul de Minas." />
       <div class="area">
         <MapaAtuacao />
         <div>
@@ -195,10 +207,10 @@ const equipamentos = [
     </div>
   </section>
 
-  <!-- 7. ORÇAMENTO ======================================================= -->
+  <!-- 10. ORÇAMENTO ======================================================= -->
   <section class="secao secao-azul" id="orcamento">
     <div class="wrap">
-      <SecaoCab num="07" rotulo="Orçamento" titulo="Conte o que precisa medir ou projetar." />
+      <SecaoCab num="08" rotulo="Orçamento" titulo="Conte o que precisa medir ou projetar." />
       <div class="orc">
         <div class="orc-info">
           <p>Quanto mais detalhe, mais preciso o orçamento: localização, área aproximada e, se tiver, a matrícula do imóvel.</p>
@@ -213,26 +225,3 @@ const equipamentos = [
     </div>
   </section>
 </Base>
-
-<script>
-  // Mira e leitura de coordenadas que seguem o ponteiro no hero (só com mouse).
-  const hero = document.querySelector<HTMLElement>('.hero');
-  const saida = document.querySelector<HTMLElement>('[data-coord]');
-  if (hero && saida && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    // Centro vem de empresa.coordenadas (atributos data-lat/data-lon do hero).
-    const centro = { lat: Number(hero.dataset.lat), lon: Number(hero.dataset.lon) };
-    const fmt = (v: number, eixo: 'lat' | 'lon') => {
-      const h = eixo === 'lat' ? (v < 0 ? 'S' : 'N') : (v < 0 ? 'W' : 'E');
-      const a = Math.abs(v), g = Math.floor(a), mTot = (a - g) * 60, m = Math.floor(mTot), s = Math.round((mTot - m) * 60);
-      return `${g}°${String(m).padStart(2, '0')}′${String(s).padStart(2, '0')}″${h}`;
-    };
-    hero.addEventListener('pointermove', (e) => {
-      const r = hero.getBoundingClientRect();
-      const fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
-      hero.style.setProperty('--mx', `${e.clientX - r.left}px`);
-      hero.style.setProperty('--my', `${e.clientY - r.top}px`);
-      const lat = centro.lat + (0.5 - fy) * 0.06, lon = centro.lon + (fx - 0.5) * 0.1;
-      saida.textContent = `${fmt(lat, 'lat')} · ${fmt(lon, 'lon')}`;
-    });
-  }
-</script>
