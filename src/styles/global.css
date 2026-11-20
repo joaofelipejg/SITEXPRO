@@ -258,15 +258,6 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .equip .fotos-campo .foto-alta { grid-column: 1 / -1; aspect-ratio: 4 / 3.6; }
 .fotos-campo .foto-alta img { object-position: 50% 62%; }
 .fotos-campo figcaption { grid-column: 1 / -1; margin-top: 0; }
-/* Home, computador: fotos e ficha técnica com a mesma altura. A coluna mais alta define a linha;
-   a foto grande ocupa o espaço que sobra e as linhas da tabela se distribuem na altura. */
-@media (min-width: 1081px) {
-  #equipamentos .equip { align-items: stretch; }
-  #equipamentos .fotos-campo { grid-template-rows: 1fr auto auto; }
-  #equipamentos .fotos-campo .foto-alta { aspect-ratio: auto; min-height: 200px; }
-  #equipamentos .fotos-campo .foto-alta img { position: absolute; inset: 0; }
-  #equipamentos .fotos-campo .foto:not(.foto-alta) { aspect-ratio: 4 / 3; }
-}
 
 /* Sobre: foto grande da equipe + duas menores ao lado */
 .equip .fotos-equipe { display: grid; grid-template-columns: 1.25fr 1fr; gap: 12px; }
@@ -321,6 +312,19 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 /* --- Equipamentos (ficha técnica) -------------------------------------- */
 .equip { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 5vw, 72px); align-items: start; }
 .equip .foto { aspect-ratio: 4 / 5; }
+/* Ficha técnica de equipamentos (home): 4 cartões em 2 colunas que ocupam toda a altura das fotos */
+#equipamentos .equip { align-items: stretch; }
+.ficha-equip { display: flex; flex-direction: column; }
+.ficha-equip-rot { font-family: var(--f-mono); font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-suave); padding-bottom: 12px; border-bottom: 2px solid var(--tinta); }
+.ficha-equip-lista { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
+.ficha-equip-item { display: flex; flex-direction: column; gap: 14px; padding: 24px 24px 24px 0; border-bottom: 1px solid var(--linha); }
+.ficha-equip-item:nth-child(even) { padding-left: 24px; padding-right: 0; border-left: 1px solid var(--linha); }
+.ficha-equip-num { font-family: var(--f-mono); font-size: .8125rem; font-weight: 600; color: var(--azul); align-self: flex-start; background: var(--amarelo); padding: 2px 8px; }
+.ficha-equip-item h3 { font-size: 1.3rem; }
+.ficha-equip-item dl { display: grid; gap: 12px; }
+.ficha-equip-item dt { font-family: var(--f-mono); font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-suave); margin-bottom: 4px; }
+.ficha-equip-item dd { font-size: .95rem; line-height: 1.5; color: var(--tinta); }
+.ficha-equip-item .ficha-equip-espec { color: var(--tinta-suave); }
 .tabela { width: 100%; border-collapse: collapse; }
 .tabela caption { text-align: left; font-family: var(--f-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--tinta-suave); padding-bottom: 12px; }
 .tabela th, .tabela td { text-align: left; vertical-align: top; padding: 18px 16px 18px 0; border-top: 1px solid var(--linha); }
@@ -609,6 +613,8 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 
 /* --- Celular ----------------------------------------------------------- */
 @media (max-width: 640px) {
+  .ficha-equip-lista { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .ficha-equip-item, .ficha-equip-item:nth-child(even) { padding: 20px 0; border-left: 0; }
   :root { --cab-altura: 72px; }
   body { font-size: 1rem; }
   .cab-inner { gap: 12px; }

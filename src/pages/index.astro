@@ -143,19 +143,21 @@ const equipamentos = [
           <Foto src={fotoPrisma} alt="Mini prisma com bolha nivelada sobre ponto auxiliar AUX 11 marcado no concreto" descricao="Mini prisma sobre ponto auxiliar" largura={420} />
           <figcaption class="legenda">Equipe com receptor GNSS RTK e coletora, estação total e mini prisma sobre ponto de apoio em obra.</figcaption>
         </figure>
-        <table class="tabela">
-          <caption>Ficha técnica</caption>
-          <thead><tr><th scope="col">Equipamento</th><th scope="col">Especificação</th><th scope="col">Aplicação</th></tr></thead>
-          <tbody>
-            {equipamentos.map((e) => (
-              <tr>
-                <th scope="row">{e.tipo}</th>
-                <td class="td-diretriz">{e.diretriz}</td>
-                <td>{e.uso}</td>
-              </tr>
+        <div class="ficha-equip">
+          <p class="ficha-equip-rot">Ficha técnica</p>
+          <ul class="ficha-equip-lista">
+            {equipamentos.map((e, i) => (
+              <li class="ficha-equip-item">
+                <span class="ficha-equip-num">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{e.tipo}</h3>
+                <dl>
+                  <div><dt>Especificação</dt><dd class="ficha-equip-espec">{e.diretriz}</dd></div>
+                  <div><dt>Aplicação</dt><dd>{e.uso}</dd></div>
+                </dl>
+              </li>
             ))}
-          </tbody>
-        </table>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
