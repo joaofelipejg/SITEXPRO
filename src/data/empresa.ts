@@ -7,9 +7,9 @@ export const empresa = {
   url: 'https://xpro.eng.br',
   fundacao: '2023',
   telefones: [
-    { exibicao: '(35) 99740-4241', e164: '+5535997404241' },
+    { exibicao: '(35) 99969-3267', e164: '+5535999693267' },
   ],
-  whatsapp: '5535997404241',
+  whatsapp: '5535999693267',
   email: 'xprolevantamentos@outlook.com',
   endereco: {
     rua: 'Praça Melo Viana, 168 C',
