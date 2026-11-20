@@ -258,6 +258,15 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .equip .fotos-campo .foto-alta { grid-column: 1 / -1; aspect-ratio: 4 / 3.6; }
 .fotos-campo .foto-alta img { object-position: 50% 62%; }
 .fotos-campo figcaption { grid-column: 1 / -1; margin-top: 0; }
+/* Home, computador: fotos e ficha técnica com a mesma altura. A coluna mais alta define a linha;
+   a foto grande ocupa o espaço que sobra e as linhas da tabela se distribuem na altura. */
+@media (min-width: 1081px) {
+  #equipamentos .equip { align-items: stretch; }
+  #equipamentos .fotos-campo { grid-template-rows: 1fr auto auto; }
+  #equipamentos .fotos-campo .foto-alta { aspect-ratio: auto; min-height: 200px; }
+  #equipamentos .fotos-campo .foto-alta img { position: absolute; inset: 0; }
+  #equipamentos .fotos-campo .foto:not(.foto-alta) { aspect-ratio: 4 / 3; }
+}
 
 /* Sobre: foto grande da equipe + duas menores ao lado */
 .equip .fotos-equipe { display: grid; grid-template-columns: 1.25fr 1fr; gap: 12px; }
