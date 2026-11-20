@@ -631,6 +631,8 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
   .so-desktop { display: none; }
   .cab-menu-txt { display: none; }
   .hero { min-height: auto; }
+  /* H1 do hero no celular: até 4 linhas em 360px (sem o limite de 19ch, que forçava 5–6 linhas) */
+  .hero h1 { font-size: clamp(1.75rem, 7.4vw + .1rem, 2.2rem); max-width: none; }
   .hero::after { background: linear-gradient(180deg, color-mix(in srgb, var(--azul) 55%, transparent), var(--azul) 85%); }
   .hero-coord { display: none; }
   .hero-acoes .btn-orcamento { width: 100%; }
