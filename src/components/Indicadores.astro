@@ -1,5 +1,5 @@
 ---
-// Seção "Capacidade técnica em números" (usada na home e na página Sobre).
+// Faixa de indicadores (usada na home e na página Sobre). O rótulo numerado é o h2 da seção.
 import SecaoCab from './SecaoCab.astro';
 
 interface Props {
@@ -15,17 +15,19 @@ const indicadores = [
   { valor: '100%', rotulo: 'Com ART registrada', desc: 'Todo serviço sai com ART registrada no CREA-MG.' },
 ];
 ---
-<section class="secao secao-azul" aria-labelledby="indicadores-titulo">
+<section class="secao secao-azul secao-indicadores" aria-labelledby="indicadores-titulo">
   <div class="wrap">
-    <SecaoCab num={num} rotulo="Indicadores" titulo="Capacidade técnica em números." id="indicadores-titulo" />
-    <ul class="indicadores">
-      {indicadores.map((i) => (
-        <li class="indicador">
-          <span class="ind-valor">{i.valor}</span>
-          <span class="ind-rotulo">{i.rotulo}</span>
-          <p class="ind-desc">{i.desc}</p>
-        </li>
-      ))}
-    </ul>
+    <div class="ind-faixa">
+      <SecaoCab num={num} rotulo="Indicadores" id="indicadores-titulo" />
+      <ul class="indicadores">
+        {indicadores.map((i) => (
+          <li class="indicador">
+            <span class="ind-valor">{i.valor}</span>
+            <span class="ind-rotulo">{i.rotulo}</span>
+            <p class="ind-desc">{i.desc}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 </section>

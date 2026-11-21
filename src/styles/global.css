@@ -302,6 +302,25 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .ind-rotulo { font-family: var(--f-mono); font-size: .8125rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--sobre-azul); margin-top: 6px; }
 .indicador p { color: var(--sobre-azul-suave); font-size: .95rem; margin-top: 8px; max-width: 32ch; }
 
+/* Faixa compacta (tablet e computador): rótulo como h2, sem título grande */
+@media (min-width: 768px) {
+  .secao-indicadores { padding-block: 56px; }
+  .secao-indicadores .secao-cab { margin-bottom: 0; padding-top: 16px; }
+  .secao-indicadores .indicadores { margin-top: 16px; }
+  .secao-indicadores .indicador { padding-top: 20px; padding-bottom: 0; gap: 2px; }
+  .secao-indicadores .ind-valor { font-size: 3rem; }
+  .secao-indicadores .ind-rotulo { margin-top: 4px; }
+  .secao-indicadores .ind-desc { font-size: .875rem; margin-top: 4px; }
+}
+@media (min-width: 1024px) {
+  .ind-faixa { display: grid; grid-template-columns: minmax(160px, .6fr) repeat(3, 1fr); border-top: 1px solid currentColor; padding-top: 20px; }
+  .secao-indicadores .secao-cab { display: block; border-top: 0; padding: 0 24px 0 0; }
+  .secao-indicadores .indicadores { grid-column: 2 / -1; margin-top: 0; border-top: 0; }
+  .secao-indicadores .indicador { padding: 0 20px; }
+  .secao-indicadores .indicador:last-child { padding-right: 0; }
+  .secao-indicadores .indicador:first-child { padding-left: 0; }
+}
+
 /* --- Como trabalhamos (régua) ------------------------------------------ */
 .regua { display: grid; grid-template-columns: repeat(5, 1fr); position: relative; counter-reset: etapa; }
 .regua::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 14px; background-image: linear-gradient(90deg, var(--tinta) 1px, transparent 1px), linear-gradient(90deg, var(--tinta) 1px, transparent 1px); background-size: 20% 14px, 4% 6px; background-repeat: repeat-x; border-top: 2px solid var(--tinta); }
@@ -749,7 +768,6 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
   /* Números: três indicadores numa linha; frases ficam só para leitor de tela */
   section[aria-labelledby="indicadores-titulo"] { padding-block: 32px; }
   section[aria-labelledby="indicadores-titulo"] .secao-cab { margin-bottom: 16px; row-gap: 10px; padding-top: 12px; }
-  section[aria-labelledby="indicadores-titulo"] .secao-cab h2 { font-size: 1.375rem; max-width: none; }
   .indicadores { grid-template-columns: repeat(3, 1fr); }
   .indicador, .indicador + .indicador { padding: 16px 8px 0 0; border-top: 0; gap: 4px; }
   .indicador + .indicador { padding-left: 10px; border-left: 1px solid var(--linha-azul); }
