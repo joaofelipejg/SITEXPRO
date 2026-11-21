@@ -46,10 +46,22 @@ const atual = Astro.url.pathname;
     botao.setAttribute('aria-expanded', String(aberto));
   });
   document.querySelectorAll('.cab-nav a').forEach((a) => a.addEventListener('click', fechar));
-  // Esc fecha o menu aberto e devolve o foco ao botão
+  // Teclado com o menu aberto (celular): Esc fecha e devolve o foco ao botão.
+  // Os links vêm antes do botão no código, então o Tab é conduzido à mão:
+  // botão -> links do menu -> volta ao botão (o menu cobre a página enquanto está aberto).
+  const focaveisMenu = () => [botao, ...document.querySelectorAll<HTMLElement>('.cab-nav a')].filter(Boolean) as HTMLElement[];
   document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape' || !document.body.classList.contains('menu-aberto')) return;
-    fechar();
-    botao?.focus();
+    if (!document.body.classList.contains('menu-aberto')) return;
+    if (e.key === 'Escape') {
+      fechar();
+      botao?.focus();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const itens = focaveisMenu();
+    const atual = itens.indexOf(document.activeElement as HTMLElement);
+    const proximo = atual === -1 ? 0 : (atual + (e.shiftKey ? -1 : 1) + itens.length) % itens.length;
+    e.preventDefault();
+    itens[proximo].focus();
   });
 </script>
