@@ -243,7 +243,7 @@ const equipamentos = [
           <p>Quanto mais detalhe, mais preciso o orçamento: localização, área aproximada e, se tiver, a matrícula do imóvel.</p>
           <dl>
             <div><dt>WhatsApp e telefone</dt><dd><a href={linkWhatsApp()} target="_blank" rel="noopener">{empresa.telefones[0].exibicao}</a></dd></div>
-            <div><dt>E-mail</dt><dd><a href={`mailto:${empresa.email}`}>{empresa.email}</a></dd></div>
+            <div><dt>E-mail</dt><dd>{empresa.email}</dd></div>
             <div><dt>Escritório</dt><dd>{endereco.rua}, {endereco.bairro}<br>{empresa.horario.texto}</dd></div>
           </dl>
         </div>

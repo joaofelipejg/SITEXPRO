@@ -11,7 +11,7 @@ export const gruposDuvidas: GrupoDuvidas[] = [
     titulo: 'Orçamento e atendimento',
     itens: [
       { pergunta: 'Quais cidades a XPRO atende?', resposta: `Estamos em Varginha e atendemos ${listaCidades}, num raio usual de ${empresa.raioKm} km. Para outras cidades, consulte: o deslocamento entra no orçamento.` },
-      { pergunta: 'Como pedir um orçamento?', resposta: 'Pelo WhatsApp, telefone, e-mail ou pelo formulário da página de contato. Informe o tipo de serviço, a localização e, se tiver, a matrícula ou o projeto do imóvel.' },
+      { pergunta: 'Como pedir um orçamento?', resposta: 'Pelo WhatsApp, telefone ou pelo formulário do site, que abre o WhatsApp. Informe o tipo de serviço, a localização e, se tiver, a matrícula ou o projeto do imóvel.' },
       { pergunta: 'Como é calculado o preço de um levantamento?', resposta: 'O valor depende do tipo de serviço, do tamanho da área, do relevo, da vegetação, do acesso e da distância até o local. Por isso cada orçamento é feito sob medida.' },
     ],
   },

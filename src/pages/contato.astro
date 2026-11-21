@@ -34,7 +34,7 @@ const linkWaze = `https://waze.com/ul?q=${destino}&navigate=yes`;
         <p>Para um orçamento preciso, informe a localização, a área aproximada e, se tiver, a matrícula do imóvel.</p>
         <dl>
           <div><dt>WhatsApp e telefone</dt><dd><a href={`tel:${empresa.telefones[0].e164}`}>{empresa.telefones[0].exibicao}</a></dd></div>
-          <div><dt>E-mail</dt><dd><a href={`mailto:${empresa.email}`}>{empresa.email}</a></dd></div>
+          <div><dt>E-mail</dt><dd>{empresa.email}</dd></div>
           <div><dt>Escritório</dt><dd>{endereco.rua}, {endereco.bairro}<br>{endereco.cidade}/{endereco.uf}</dd></div>
           <div><dt>Horário</dt><dd>{empresa.horario.texto}</dd></div>
         </dl>

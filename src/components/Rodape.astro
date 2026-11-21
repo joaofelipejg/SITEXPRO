@@ -32,7 +32,7 @@ const ano = new Date().getFullYear();
         <span class="cel-rot">Contato</span>
         <ul>
           {empresa.telefones.map((t) => <li><a href={`tel:${t.e164}`}>{t.exibicao}</a></li>)}
-          <li><a href={`mailto:${empresa.email}`}>{empresa.email}</a></li>
+          <li>{empresa.email}</li>
         </ul>
       </div>
 

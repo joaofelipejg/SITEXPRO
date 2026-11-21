@@ -1,7 +1,6 @@
 ---
-// Formulário de orçamento: monta o pedido e abre o programa de e-mail de quem preenche, já endereçado
-// à XPRO (mailto). Não depende de servidor nem de serviço externo. Se o e-mail não abrir, o aviso mostra
-// o endereço para copiar e o link do WhatsApp. O WhatsApp também fica no botão flutuante.
+// Formulário de orçamento: monta o pedido e abre o WhatsApp da XPRO com a mensagem pronta.
+// Não depende de servidor nem de serviço externo. Se o WhatsApp não abrir, o aviso mostra o link.
 import { getCollection } from 'astro:content';
 import { empresa } from '../data/empresa';
 
@@ -20,7 +19,7 @@ const p = claro ? 'contato' : 'orcamento';
 // Na versão clara todos os campos têm exemplo; na escura, só os que já tinham
 const exemplo = (texto: string) => (claro ? texto : undefined);
 ---
-<form class:list={['form', 'form-orcamento', { 'form-claro': claro }]} data-email={empresa.email} data-numero={empresa.whatsapp}>
+<form class:list={['form', 'form-orcamento', { 'form-claro': claro }]} data-numero={empresa.whatsapp}>
   <div class="campo">
     <label for={`${p}-nome`}>Nome</label>
     <input id={`${p}-nome`} name="nome" required autocomplete="name" placeholder={exemplo('Maria da Silva')}>
@@ -47,12 +46,12 @@ const exemplo = (texto: string) => (claro ? texto : undefined);
   </div>
   <div class="campo campo-largo">
     <label for={`${p}-mensagem`}>Mensagem</label>
-    <!-- limite: links de e-mail muito longos podem não abrir em alguns programas -->
+    <!-- limite: mensagens muito longas podem não abrir no WhatsApp -->
     <textarea id={`${p}-mensagem`} name="mensagem" rows="3" maxlength="800" placeholder="Área aproximada, localização, para que precisa e prazo desejado."></textarea>
   </div>
   <div class="form-pe">
-    <button type="submit" class="btn-orcamento">Enviar por e-mail <span class="seta" aria-hidden="true">→</span></button>
-    <small>Abre o seu e-mail com o pedido pronto, endereçado à XPRO. É só confirmar o envio.</small>
+    <button type="submit" class="btn-orcamento">Enviar pelo WhatsApp <span class="seta" aria-hidden="true">→</span></button>
+    <small>Abre o WhatsApp com o pedido pronto para a XPRO. É só enviar.</small>
     <p class="form-status" role="status" aria-live="polite" hidden></p>
   </div>
 </form>
@@ -60,41 +59,31 @@ const exemplo = (texto: string) => (claro ? texto : undefined);
 <script>
   document.querySelectorAll<HTMLFormElement>('.form-orcamento').forEach((form) => {
     const status = form.querySelector<HTMLParagraphElement>('.form-status')!;
-    const email = form.dataset.email ?? '';
-    const whatsapp = `https://wa.me/${form.dataset.numero}`;
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const d = new FormData(form);
       const valor = (campo: string) => String(d.get(campo) ?? '').trim();
-      const assunto = `Pedido de orçamento: ${valor('servico')} · ${valor('cidade')}`;
-      const corpo = [
+      const texto = [
+        'Olá! Gostaria de um orçamento.',
+        '',
         `Nome: ${valor('nome')}`,
         `Telefone / WhatsApp: ${valor('telefone')}`,
         `Cidade do imóvel: ${valor('cidade')}`,
         `Tipo de serviço: ${valor('servico')}`,
-        '',
-        valor('mensagem') || '(sem mensagem)',
-        '',
-        '— Enviado pelo formulário do site da XPRO',
-      ].join('\r\n');
+        ...(valor('mensagem') ? ['', valor('mensagem')] : []),
+      ].join('\n');
+      const link = `https://wa.me/${form.dataset.numero}?text=${encodeURIComponent(texto)}`;
 
-      window.location.href = `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+      // abre em outra aba; se o navegador bloquear, abre na mesma
+      const aba = window.open(link, '_blank');
+      if (aba) aba.opener = null;
+      else window.location.href = link;
 
-      // o site não tem como saber se o e-mail abriu: deixa o caminho alternativo à mão
+      // o site não tem como saber se o WhatsApp abriu: deixa o link à mão
       status.hidden = false;
       status.innerHTML =
-        `Abrimos o seu e-mail com o pedido pronto. Se ele não abriu, escreva para <strong>${email}</strong>` +
-        ` <button type="button" data-copiar>copiar</button> ou fale pelo <a href="${whatsapp}" target="_blank" rel="noopener">WhatsApp</a>.`;
-      status.querySelector<HTMLButtonElement>('[data-copiar]')?.addEventListener('click', async (ev) => {
-        const botao = ev.currentTarget as HTMLButtonElement;
-        try {
-          await navigator.clipboard.writeText(email);
-          botao.textContent = 'copiado';
-        } catch {
-          botao.textContent = 'não deu para copiar';
-        }
-      });
+        `Abrimos o WhatsApp com o pedido pronto. Se ele não abriu, <a href="${link}" target="_blank" rel="noopener">toque aqui</a>.`;
     });
   });
 </script>
