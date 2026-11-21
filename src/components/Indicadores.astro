@@ -1,6 +1,7 @@
 ---
 // Faixa de indicadores (usada na home e na página Sobre). O rótulo numerado é o h2 da seção.
 import SecaoCab from './SecaoCab.astro';
+import { empresa } from '../data/empresa';
 
 interface Props {
   /** número da seção na página (selo) */
@@ -12,7 +13,7 @@ const { num } = Astro.props;
 const indicadores = [
   { valor: '+100', rotulo: 'Projetos entregues', desc: 'Para indústrias, incorporadoras, varejo e produtores rurais.' },
   { valor: '+500', rotulo: 'Hectares levantados', desc: 'Medidos com GNSS RTK e drone, de lotes urbanos a fazendas.' },
-  { valor: '100%', rotulo: 'Com ART registrada', desc: 'Todo serviço sai com ART registrada no CREA-MG.' },
+  { valor: '+50', rotulo: 'Imóveis certificados no SIGEF', desc: `Georreferenciamento de imóveis rurais certificado no INCRA. Credenciado ${empresa.responsavelTecnico.incra.codigo}.` },
 ];
 ---
 <section class="secao secao-azul secao-indicadores" aria-labelledby="indicadores-titulo">
