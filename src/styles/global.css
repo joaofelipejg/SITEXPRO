@@ -135,7 +135,7 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 .hero-acoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(28px, 4vw, 44px); }
 
 .hero-faixa { position: relative; border-top: 1px solid var(--linha-azul); background: color-mix(in srgb, var(--azul-profundo) 70%, transparent); backdrop-filter: none; }
-.hero-faixa dl { display: grid; grid-template-columns: 2fr 1fr 1.4fr; }
+.hero-faixa dl { display: grid; grid-template-columns: 1.6fr .9fr 1.2fr 1.6fr; }
 .hero-faixa div { padding: 18px 20px 20px; border-left: 1px solid var(--linha-azul); }
 .hero-faixa div:first-child { border-left: 0; padding-left: 0; }
 .hero-faixa dt { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--amarelo); margin-bottom: 6px; }

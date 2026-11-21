@@ -26,5 +26,8 @@ const { titulo, subtitulo, trilha, rotulo } = Astro.props;
     {rotulo && <p class="pagina-rot">{rotulo}</p>}
     <h1>{titulo}</h1>
     {subtitulo && <p class="pagina-sub">{subtitulo}</p>}
+    {/* Conteúdo extra opcional da página, logo abaixo do subtítulo */}
+    <slot />
+
   </div>
 </section>

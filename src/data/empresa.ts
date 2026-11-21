@@ -4,6 +4,21 @@
 export const empresa = {
   nome: 'XPRO Projetos e Levantamentos',
   nomeCurto: 'XPRO',
+  razaoSocial: 'XPRO PROJETOS E LEVANTAMENTOS LTDA',
+  cnpj: '50.347.213/0001-62',
+  // Responsável técnico: aparece na faixa do hero, no Sobre, no georreferenciamento, no rodapé e no schema.
+  responsavelTecnico: {
+    nome: 'João Felipe Jardim Grande',
+    // TODO [CONFIRMAR]: incluir "e engenheiro civil" na formação? Só altere depois de confirmado.
+    formacao: 'Técnico em agrimensura',
+    registro: {
+      conselho: 'CRT-MG',
+      conselhoNome: 'Conselho Regional dos Técnicos Industriais de Minas Gerais',
+      numero: '12558969650',
+    },
+    // Credenciamento no INCRA para certificação de imóveis rurais no SIGEF
+    incra: { codigo: 'JFPU' },
+  },
   url: 'https://xpro.eng.br',
   fundacao: '2023',
   telefones: [
@@ -66,3 +81,10 @@ export function grausMinutos(valor: number, eixo: 'lat' | 'lon') {
   const minutos = Math.round((abs - graus) * 60);
   return `${graus}°${String(minutos).padStart(2, '0')}′${hemisferio}`;
 }
+
+// Textos montados a partir do responsável técnico (use estes, não repita o texto fixo)
+const rt = empresa.responsavelTecnico;
+/** "CRT-MG nº 12558969650" */
+export const registroProfissional = `${rt.registro.conselho} nº ${rt.registro.numero}`;
+/** "Credenciado INCRA/SIGEF · JFPU" */
+export const credenciamentoIncra = `Credenciado INCRA/SIGEF · ${rt.incra.codigo}`;

@@ -6,6 +6,8 @@ import Faq from '../../components/Faq.astro';
 import ChamadaWhatsApp from '../../components/ChamadaWhatsApp.astro';
 import CardObra from '../../components/CardObra.astro';
 import { empresa, linkWhatsApp } from '../../data/empresa';
+
+// Só o georreferenciamento mostra o credenciamento INCRA/SIGEF no topo
 import { breadcrumb, faqPage, semPlaceholder } from '../../data/schema';
 import { marcar } from '../../data/texto';
 
@@ -30,6 +32,7 @@ const obras = (await getCollection('obras'))
   .sort((a, b) => a.data.ordem - b.data.ordem)
   .slice(0, 2);
 
+const ehGeorreferenciamento = servico.id === 'georreferenciamento';
 const mensagem = `Olá! Gostaria de um orçamento de ${d.titulo.toLowerCase()}.`;
 
 const faqSchema = semPlaceholder(d.faq);
@@ -54,7 +57,14 @@ const schemas = [
     titulo={`${d.titulo} em Varginha e Sul de Minas`}
     subtitulo={d.resumo}
     trilha={trilha}
-  />
+  >
+    {ehGeorreferenciamento && (
+      <dl class="case-ficha">
+        <div><dt>Credenciamento</dt><dd>Credenciado INCRA/SIGEF · código {empresa.responsavelTecnico.incra.codigo}</dd></div>
+        <div style="grid-column: 2 / -1"><dt>Por que importa</dt><dd>O credenciamento no INCRA é exigido para certificar imóveis rurais no SIGEF.</dd></div>
+      </dl>
+    )}
+  </CabecalhoPagina>
 
   <section class="secao">
     <div class="wrap doc">

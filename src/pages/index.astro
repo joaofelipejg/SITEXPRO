@@ -12,7 +12,7 @@ import FormOrcamento from '../components/FormOrcamento.astro';
 import Conformidade from '../components/Conformidade.astro';
 import GradeClientes from '../components/GradeClientes.astro';
 import Indicadores from '../components/Indicadores.astro';
-import { empresa, linkWhatsApp, grausMinutos, listaCidades } from '../data/empresa';
+import { empresa, linkWhatsApp, grausMinutos, listaCidades, registroProfissional, credenciamentoIncra } from '../data/empresa';
 import { autoridade, droneRegularizado } from '../data/autoridade';
 import { marcar } from '../data/texto';
 import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
@@ -79,6 +79,10 @@ const equipamentos = [
         {autoridade.nrs.length > 0 && autoridade.drone.cadastroAnac && (
           <div><dt>Segurança</dt><dd>Equipe com NRs e drone regularizado na ANAC</dd></div>
         )}
+        <div>
+          <dt>Responsável técnico</dt>
+          <dd>{empresa.responsavelTecnico.nome} · {empresa.responsavelTecnico.formacao} · {registroProfissional}<br>{credenciamentoIncra}</dd>
+        </div>
       </dl>
     </div>
   </section>

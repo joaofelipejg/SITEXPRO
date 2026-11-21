@@ -5,13 +5,14 @@ import ChamadaWhatsApp from '../components/ChamadaWhatsApp.astro';
 import Indicadores from '../components/Indicadores.astro';
 import SecaoCab from '../components/SecaoCab.astro';
 import Foto from '../components/Foto.astro';
-import { empresa } from '../data/empresa';
+import { empresa, registroProfissional } from '../data/empresa';
 import { breadcrumb } from '../data/schema';
 import fotoEquipeEstacao from '../assets/fotos/equipe-estacao-total.jpg';
 import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
 import fotoEquipeOperador from '../assets/fotos/equipe-operador-gnss.jpg';
 
 const trilha = [{ nome: 'Sobre', href: '/sobre/' }];
+const rt = empresa.responsavelTecnico;
 
 ---
 <Base
@@ -32,7 +33,7 @@ const trilha = [{ nome: 'Sobre', href: '/sobre/' }];
         <Foto src={fotoEquipeEstacao} alt="Dois integrantes da equipe XPRO de capacete, colete e cinto de segurança, sorrindo ao lado de uma estação total no alto de uma obra pré-moldada" descricao="Equipe XPRO com estação total no alto da obra" largura={720} class="foto-destaque" carregar="eager" />
         <Foto src={fotoEquipeGnss} alt="Dois técnicos da XPRO com uniforme azul fazendo levantamento com receptor GNSS e coletora em frente a um galpão metálico" descricao="Equipe XPRO em levantamento com GNSS" largura={480} />
         <Foto src={fotoEquipeOperador} alt="Técnico da XPRO de capacete e colete laranja operando a coletora com o receptor GNSS no bastão, em canteiro de obra" descricao="Técnico da XPRO com GNSS e coletora" largura={480} />
-        <figcaption class="legenda">João Felipe (à esquerda), técnico em agrimensura e engenheiro civil, numa locação em obra pré-moldada.</figcaption>
+        <figcaption class="legenda">{rt.nome} (à esquerda), {rt.formacao.toLowerCase()}, numa locação em obra pré-moldada.</figcaption>
       </figure>
       <div>
         <SecaoCab num="01" rotulo="Quem somos" titulo="Precisão no campo, projeto que sai do papel." />
@@ -46,6 +47,12 @@ const trilha = [{ nome: 'Sobre', href: '/sobre/' }];
           <div><dt>Desde</dt><dd>{empresa.fundacao}</dd></div>
           <div><dt>Base</dt><dd>{empresa.endereco.cidade}/{empresa.endereco.uf}</dd></div>
           <div><dt>Equipamentos</dt><dd>GNSS CHCNAV · Estação total · Drone</dd></div>
+        </dl>
+        <dl class="sobre-fatos" aria-label="Responsável técnico">
+          <div><dt>Responsável técnico</dt><dd>{rt.nome}</dd></div>
+          <div><dt>Formação</dt><dd>{rt.formacao}</dd></div>
+          <div><dt>Registro</dt><dd>{registroProfissional}</dd></div>
+          <div><dt>INCRA/SIGEF</dt><dd>Credenciado · código {rt.incra.codigo}</dd></div>
         </dl>
         <p class="sobre-nota">Seguimos as Normas Regulamentadoras exigidas em canteiro de obra e entregamos cada serviço com ART do responsável técnico.</p>
       </div>

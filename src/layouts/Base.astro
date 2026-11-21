@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Cabecalho from '../components/Cabecalho.astro';
 import Rodape from '../components/Rodape.astro';
-import { empresa, linkWhatsApp } from '../data/empresa';
+import { empresa, linkWhatsApp, registroProfissional } from '../data/empresa';
 import { getImage } from 'astro:assets';
 import fotoObra from '../assets/obra-gnss.jpg';
 import logo from '../assets/logo-xpro.png';
@@ -23,11 +23,14 @@ const ogImageUrl = new URL(ogImage.src, Astro.site).href;
 const logoImg = await getImage({ src: logo, width: 400, format: 'png' });
 
 const { endereco, horario } = empresa;
+const rt = empresa.responsavelTecnico;
 const localBusiness = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   '@id': `${empresa.url}/#empresa`,
   name: empresa.nome,
+  legalName: empresa.razaoSocial,
+  taxID: empresa.cnpj,
   url: `${empresa.url}/`,
   logo: new URL(logoImg.src, Astro.site).href,
   image: ogImageUrl,
@@ -51,6 +54,28 @@ const localBusiness = {
   }],
   areaServed: empresa.areaAtendida.map((nome) => ({ '@type': 'Place', name: nome })),
   sameAs: Object.values(empresa.redes),
+  // Responsável técnico, com registro profissional e credenciamento INCRA/SIGEF
+  employee: {
+    '@type': 'Person',
+    name: rt.nome,
+    jobTitle: 'Responsável técnico',
+    hasCredential: [
+      {
+        '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Registro profissional',
+        name: registroProfissional,
+        identifier: rt.registro.numero,
+        recognizedBy: { '@type': 'Organization', name: `${rt.registro.conselhoNome} (${rt.registro.conselho})` },
+      },
+      {
+        '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Credenciamento para certificação de imóveis rurais no SIGEF',
+        name: 'Credenciamento INCRA/SIGEF',
+        identifier: rt.incra.codigo,
+        recognizedBy: { '@type': 'GovernmentOrganization', name: 'Instituto Nacional de Colonização e Reforma Agrária (INCRA)' },
+      },
+    ],
+  },
 };
 ---
 <!doctype html>

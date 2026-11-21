@@ -3,7 +3,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import logo from '../assets/logo-xpro.png';
-import { empresa, menu, grausMinutos } from '../data/empresa';
+import { empresa, menu, grausMinutos, registroProfissional } from '../data/empresa';
 
 const servicos = (await getCollection('servicos')).sort((a, b) => a.data.ordem - b.data.ordem);
 const topografia = servicos.filter((s) => s.data.grupo === 'topografia');
@@ -23,6 +23,9 @@ const ano = new Date().getFullYear();
         <span class="cel-rot">Endereço</span>
         <p>{endereco.rua}<br>{endereco.bairro} · {endereco.cidade}/{endereco.uf}</p>
         <p class="mono">{grausMinutos(coordenadas.lat, 'lat')} {grausMinutos(coordenadas.lon, 'lon')}</p>
+        <p>{empresa.razaoSocial}</p>
+        <p class="mono">CNPJ {empresa.cnpj}</p>
+        <p class="mono">Resp. técnico: {empresa.responsavelTecnico.nome} · {registroProfissional}</p>
       </div>
 
       <div class="cel">
