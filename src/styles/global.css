@@ -785,3 +785,13 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
 h2.secao-rot { font-weight: 400; line-height: inherit; max-width: none; }
 .secao-cab-so-rotulo { margin-bottom: 16px; }
 .equip .secao-cab-so-rotulo { margin-bottom: 16px; }
+
+/* Sobre, "Quem somos" no computador: a coluna de fotos acompanha a altura do texto
+   (as fotos cortam as bordas com object-fit, sem distorcer). Tablet e celular não mudam. */
+@media (min-width: 1081px) {
+  .sobre-quem { align-items: stretch; }
+  .sobre-quem .fotos-equipe { grid-template-rows: 1fr 1fr auto; }
+  .sobre-quem .fotos-equipe .foto { aspect-ratio: auto; min-height: 0; }
+  .sobre-quem .fotos-equipe .foto-destaque { height: auto; min-height: 300px; }
+  .sobre-quem .fotos-equipe .foto img { position: absolute; inset: 0; }
+}
