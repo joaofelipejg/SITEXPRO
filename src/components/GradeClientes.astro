@@ -5,10 +5,11 @@
 // Sem logo, a célula mostra o nome do cliente em texto.
 import { Image } from 'astro:assets';
 
-const clientes: { nome: string; segmento: string; logo?: ImageMetadata }[] = [
-  { nome: 'Cimed', segmento: 'Indústria farmacêutica' },
+// obra (opcional): página da obra feita para o cliente; o nome vira link para ela.
+const clientes: { nome: string; segmento: string; logo?: ImageMetadata; obra?: string }[] = [
+  { nome: 'Cimed', segmento: 'Indústria farmacêutica', obra: '/obras/cimed-pouso-alegre/' },
   { nome: 'Grupo Boticário', segmento: 'Logística' },
-  { nome: 'Nutrien', segmento: 'Soluções agrícolas' },
+  { nome: 'Nutrien', segmento: 'Soluções agrícolas', obra: '/obras/nutrien-fama/' },
   { nome: 'Andrade FS Incorporadora', segmento: 'Incorporação' },
   { nome: 'Supermercados Alvorada', segmento: 'Varejo' },
   { nome: 'Fortgreen', segmento: 'Agronegócio' },
@@ -20,7 +21,9 @@ const clientes: { nome: string; segmento: string; logo?: ImageMetadata }[] = [
       <div class="cliente-logo">
         {c.logo
           ? <Image src={c.logo} alt={c.nome} height={96} />
-          : <span class="cliente-nome">{c.nome}</span>}
+          : c.obra
+            ? <a class="cliente-nome cliente-link" href={c.obra}>{c.nome}</a>
+            : <span class="cliente-nome">{c.nome}</span>}
       </div>
       <span class="cliente-seg">{c.segmento}</span>
     </li>

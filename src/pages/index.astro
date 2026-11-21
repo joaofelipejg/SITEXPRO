@@ -135,8 +135,8 @@ const equipamentos = [
       <div class="equip">
         <figure class="fotos-campo">
           <Foto src={fotoEquipeGnss} alt="Dois técnicos da XPRO com uniforme azul fazendo levantamento com receptor GNSS e coletora em frente a um galpão metálico" descricao="Equipe XPRO em levantamento com GNSS" largura={760} class="foto-alta" foco="50% 50%" />
-          <Foto src={fotoEstacao} alt="Estação total amarela em tripé, com coordenadas no visor, diante de escavação de obra" descricao="Estação total em obra" largura={420} />
-          <Foto src={fotoPrisma} alt="Mini prisma com bolha nivelada sobre ponto auxiliar AUX 11 marcado no concreto" descricao="Mini prisma sobre ponto auxiliar" largura={420} />
+          <Foto class="foto-mini" src={fotoEstacao} alt="Estação total amarela em tripé, com coordenadas no visor, diante de escavação de obra" descricao="Estação total em obra" largura={420} />
+          <Foto class="foto-mini" src={fotoPrisma} alt="Mini prisma com bolha nivelada sobre ponto auxiliar AUX 11 marcado no concreto" descricao="Mini prisma sobre ponto auxiliar" largura={420} />
           <figcaption class="legenda">Equipe com receptor GNSS RTK e coletora, estação total e mini prisma sobre ponto de apoio em obra.</figcaption>
         </figure>
         <div class="ficha-equip">
@@ -144,16 +144,39 @@ const equipamentos = [
           <ul class="ficha-equip-lista">
             {equipamentos.map((e, i) => (
               <li class="ficha-equip-item">
-                <span class="ficha-equip-num">{String(i + 1).padStart(2, '0')}</span>
-                <h3>{e.tipo}</h3>
-                <dl>
-                  <div><dt>Especificação</dt><dd class="ficha-equip-espec">{e.diretriz}</dd></div>
-                  <div><dt>Aplicação</dt><dd>{e.uso}</dd></div>
-                </dl>
-                {e.regularizacao && <p class="ficha-equip-registros">{e.regularizacao}</p>}
+                {/* Sempre aberto no computador; no celular o script abaixo fecha e vira lista expansível */}
+                <details class="ficha-equip-det" open>
+                  <summary>
+                    <span class="ficha-equip-num">{String(i + 1).padStart(2, '0')}</span>
+                    <h3>{e.tipo}</h3>
+                    <span class="ficha-equip-previa" aria-hidden="true">{e.uso}</span>
+                  </summary>
+                  <div class="ficha-equip-corpo">
+                    <dl>
+                      <div><dt>Especificação</dt><dd class="ficha-equip-espec">{e.diretriz}</dd></div>
+                      <div><dt>Aplicação</dt><dd>{e.uso}</dd></div>
+                    </dl>
+                    {e.regularizacao && <p class="ficha-equip-registros">{e.regularizacao}</p>}
+                  </div>
+                </details>
               </li>
             ))}
           </ul>
+          <script is:inline>
+            // Ficha de equipamentos: no celular (até 767px) os itens começam fechados e abrem ao toque;
+            // no computador ficam sempre abertos e não fecham. Roda logo após a lista, sem piscar.
+            // Sem JavaScript, todos aparecem abertos.
+            (function () {
+              var celular = matchMedia('(max-width: 767px)');
+              var itens = document.querySelectorAll('.ficha-equip-det');
+              function ajustar() { itens.forEach(function (d) { d.open = !celular.matches; }); }
+              ajustar();
+              celular.addEventListener('change', ajustar);
+              itens.forEach(function (d) {
+                d.querySelector('summary').addEventListener('click', function (ev) { if (!celular.matches) ev.preventDefault(); });
+              });
+            })();
+          </script>
         </div>
       </div>
     </div>
