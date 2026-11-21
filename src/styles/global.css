@@ -814,3 +814,6 @@ h2.secao-rot { font-weight: 400; line-height: inherit; max-width: none; }
   .mapa-celular { display: block; }
   .mapa-legenda-celular { display: block; }
 }
+
+/* Orçamento: menos espaço entre o título e o formulário, para o botão "Pedir orçamento" mostrar tudo, até "Enviar pelo WhatsApp" */
+.secao-orcamento .secao-cab { margin-bottom: 40px; }
