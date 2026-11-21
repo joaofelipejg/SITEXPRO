@@ -5,7 +5,8 @@ import ChamadaWhatsApp from '../components/ChamadaWhatsApp.astro';
 import Indicadores from '../components/Indicadores.astro';
 import SecaoCab from '../components/SecaoCab.astro';
 import Foto from '../components/Foto.astro';
-import { empresa, registroProfissional } from '../data/empresa';
+import { empresa, registroProfissional, linkWhatsApp } from '../data/empresa';
+import { listaNrsCurta, mensagemDocumentacao } from '../data/autoridade';
 import { breadcrumb } from '../data/schema';
 import fotoEquipeEstacao from '../assets/fotos/equipe-estacao-total.jpg';
 import fotoEquipeGnss from '../assets/fotos/equipe-gnss-galpao.jpg';
@@ -28,33 +29,36 @@ const rt = empresa.responsavelTecnico;
   />
 
   <section class="secao">
-    <div class="wrap equip">
-      <figure class="fotos-equipe">
-        <Foto src={fotoEquipeEstacao} alt="Dois integrantes da equipe XPRO de capacete, colete e cinto de segurança, sorrindo ao lado de uma estação total no alto de uma obra pré-moldada" descricao="Equipe XPRO com estação total no alto da obra" largura={720} class="foto-destaque" carregar="eager" />
-        <Foto src={fotoEquipeGnss} alt="Dois técnicos da XPRO com uniforme azul fazendo levantamento com receptor GNSS e coletora em frente a um galpão metálico" descricao="Equipe XPRO em levantamento com GNSS" largura={480} />
-        <Foto src={fotoEquipeOperador} alt="Técnico da XPRO de capacete e colete laranja operando a coletora com o receptor GNSS no bastão, em canteiro de obra" descricao="Técnico da XPRO com GNSS e coletora" largura={480} />
+    <div class="wrap equip sobre-quem">
+      <figure class="fotos-equipe sobre-quem-fotos">
+        <Foto src={fotoEquipeEstacao} alt={`${rt.nome} (à esquerda) e outro integrante da equipe XPRO, com capacete e cinto de segurança, ao lado da estação total no alto de uma obra pré-moldada`} descricao="Equipe XPRO com estação total no alto da obra" largura={720} class="foto-destaque" carregar="eager" />
+        <Foto src={fotoEquipeGnss} alt="Dois técnicos da XPRO de uniforme azul medindo com receptor GNSS e coletora ao lado de um galpão metálico em construção" descricao="Equipe XPRO em levantamento com GNSS" largura={480} />
+        <Foto src={fotoEquipeOperador} alt="Técnico da XPRO de capacete e colete laranja conferindo pontos na coletora, com o receptor GNSS no bastão, em canteiro de obra" descricao="Técnico da XPRO com GNSS e coletora" largura={480} />
         <figcaption class="legenda">{rt.nome} (à esquerda), {rt.formacao.toLowerCase()}, numa locação em obra pré-moldada.</figcaption>
       </figure>
-      <div>
-        <SecaoCab num="01" rotulo="Quem somos" titulo="Precisão no campo, projeto que sai do papel." />
+      <div class="sobre-quem-texto">
+        <SecaoCab num="01" rotulo="Quem somos" titulo="Topografia e projeto no Sul de Minas." />
         <div class="sobre-texto">
-          <p>Fundada em 2023, a X Pro Projetos e Levantamentos é uma empresa familiar especializada em <strong>projetos e topografia</strong>. Com equipe técnica e equipamentos GNSS, estação total e drone, nos destacamos pela precisão na coleta de dados e no desenvolvimento de projetos viáveis.</p>
-          <p>Mais do que executar serviços, transformamos ideias em realidade com comprometimento, qualidade e atenção aos detalhes. Começamos atendendo loteadoras da região e hoje trabalhamos também para indústrias como Cimed e Nutrien.</p>
-          <p>A responsabilidade social e ambiental guia cada etapa do nosso trabalho, do levantamento à entrega com ART.</p>
+          {/* TODO [CONFIRMAR]: nomes dos fundadores (pai e filho) e o motivo da fundação (respostas 1 e 2).
+              Quando confirmar, incluir os nomes neste parágrafo. */}
+          <p>A XPRO é uma empresa familiar de {empresa.endereco.cidade}/{empresa.endereco.uf}, fundada em {empresa.fundacao}. Vimos espaço no mercado de topografia da região e decidimos investir nele.</p>
+          <p>Fazemos topografia e projeto no mesmo escritório: quem mede o terreno também faz o projeto. No galpão da Brittos Pneus, em Varginha, fizemos o levantamento planialtimétrico, o projeto de terraplenagem, a locação dos pilares e da estrutura metálica e a regularização do terreno em cartório.</p>
+          {/* TODO [CONFIRMAR]: para onde a empresa quer ir (resposta 6). Acrescentar ao fim deste parágrafo. */}
+          <p>Começamos atendendo loteadoras da região. Hoje trabalhamos também para indústrias como a Cimed, em Pouso Alegre, e a Nutrien, em Fama, além de incorporadoras e do varejo.</p>
         </div>
-        <dl class="sobre-fatos">
-          <div><dt>Empresa</dt><dd>Familiar</dd></div>
-          <div><dt>Desde</dt><dd>{empresa.fundacao}</dd></div>
-          <div><dt>Base</dt><dd>{empresa.endereco.cidade}/{empresa.endereco.uf}</dd></div>
-          <div><dt>Equipamentos</dt><dd>GNSS CHCNAV · Estação total · Drone</dd></div>
-        </dl>
-        <dl class="sobre-fatos" aria-label="Responsável técnico">
+      </div>
+      <div class="sobre-quem-ficha">
+        <dl class="sobre-fatos" aria-label="Ficha técnica da XPRO">
           <div><dt>Responsável técnico</dt><dd>{rt.nome}</dd></div>
           <div><dt>Formação</dt><dd>{rt.formacao}</dd></div>
           <div><dt>Registro</dt><dd>{registroProfissional}</dd></div>
-          <div><dt>INCRA/SIGEF</dt><dd>Credenciado · código {rt.incra.codigo}</dd></div>
+          <div><dt>Credenciado INCRA/SIGEF</dt><dd>{rt.incra.codigo}</dd></div>
+          <div><dt>CNPJ</dt><dd>{empresa.cnpj}</dd></div>
+          <div><dt>Fundação</dt><dd>{empresa.endereco.cidade}/{empresa.endereco.uf}, {empresa.fundacao}</dd></div>
+          <div><dt>Equipamentos</dt><dd>{empresa.equipamentos.join(' · ')}</dd></div>
         </dl>
-        <p class="sobre-nota">Seguimos as Normas Regulamentadoras exigidas em canteiro de obra e entregamos cada serviço com ART do responsável técnico.</p>
+        <p class="sobre-nota">Equipe com {listaNrsCurta} em dia. Documentação para integração em obra disponível sob pedido.</p>
+        <p class="sobre-nota"><a class="link-seta" href={linkWhatsApp(mensagemDocumentacao)} target="_blank" rel="noopener">Solicitar documentação</a></p>
       </div>
     </div>
   </section>

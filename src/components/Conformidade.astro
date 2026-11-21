@@ -3,7 +3,7 @@
 // Dados em src/data/autoridade.ts; o que estiver sem dado (null) não aparece.
 // Ícones genéricos desenhados aqui (sem logos oficiais da ABNT, ANAC ou DECEA).
 import SecaoCab from './SecaoCab.astro';
-import { autoridade, linhaAnac } from '../data/autoridade';
+import { autoridade, linhaAnac, mensagemDocumentacao } from '../data/autoridade';
 import { linkWhatsApp } from '../data/empresa';
 
 interface Props {
@@ -24,7 +24,7 @@ const cards = [
   drone.voosDecea && { icone: 'aviao', titulo: 'DECEA', linha: 'Voos solicitados no SARPAS antes de cada missão' },
 ].filter(Boolean) as { icone: string; titulo: string; linha: string }[];
 
-const linkDocumentacao = linkWhatsApp('Olá, preciso da documentação de segurança da equipe XPRO para integração na minha obra/empresa.');
+const linkDocumentacao = linkWhatsApp(mensagemDocumentacao);
 ---
 <section class="secao secao-azul secao-compacta" id="conformidade" aria-labelledby="conformidade-titulo">
   <div class="wrap">

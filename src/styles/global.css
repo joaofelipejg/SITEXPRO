@@ -705,3 +705,19 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
   .whats-ico { width: 54px; height: 54px; }
   .whats-ico svg { width: 27px; height: 27px; }
 }
+
+/* Sobre, "Quem somos": fotos e texto lado a lado; ficha técnica em largura total embaixo
+   (duas colunas de linhas). Celular e tablet: texto, ficha e depois fotos. */
+.sobre-quem { grid-template-areas: "fotos texto" "ficha ficha"; row-gap: clamp(40px, 5vw, 64px); }
+.sobre-quem-fotos { grid-area: fotos; }
+.sobre-quem-texto { grid-area: texto; }
+.sobre-quem-ficha { grid-area: ficha; }
+.sobre-quem-ficha .sobre-fatos { margin-top: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(32px, 5vw, 72px); }
+.sobre-quem-ficha .sobre-fatos div { grid-template-columns: 220px 1fr; }
+@media (max-width: 1080px) {
+  .sobre-quem { grid-template-areas: "texto" "ficha" "fotos"; }
+  .sobre-quem-ficha .sobre-fatos { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .sobre-quem-ficha .sobre-fatos div { grid-template-columns: 1fr; }
+}

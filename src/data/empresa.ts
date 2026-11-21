@@ -45,6 +45,8 @@ export const empresa = {
     abre: '07:00',
     fecha: '17:00',
   },
+  // Equipamentos com modelo (ficha técnica da página Sobre)
+  equipamentos: ['GNSS CHCNAV i76', 'Estação total Geodetic GD2i-8', 'Drone DJI Air 2S'],
   areaAtendida: ['Varginha', 'Sul de Minas'],
   raioKm: 150, // raio usual de atendimento a partir de Varginha
   cidadesAtendidas: ['Varginha', 'Pouso Alegre', 'Elói Mendes', 'Três Pontas', 'Três Corações', 'Campanha', 'Alfenas'],

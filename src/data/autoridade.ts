@@ -54,3 +54,12 @@ export const linhaAnac = (() => {
   // sem número nem piloto informados: só o que é certo (cadastro no SISANT)
   return partes.length > 0 ? partes.join(' · ') : 'Aeronave cadastrada no SISANT';
 })();
+
+/** "NR-1, 6, 7, 18 e 35" (forma curta, só o primeiro com o prefixo) */
+export const listaNrsCurta = (() => {
+  const n = autoridade.nrs.map((x, i) => (i === 0 ? x.codigo : x.codigo.replace(/^NR-/, '')));
+  return n.length > 1 ? `${n.slice(0, -1).join(', ')} e ${n[n.length - 1]}` : n.join('');
+})();
+
+/** Mensagem do WhatsApp para pedir a documentação de segurança (home e Sobre usam a mesma) */
+export const mensagemDocumentacao = 'Olá, preciso da documentação de segurança da equipe XPRO para integração na minha obra/empresa.';
