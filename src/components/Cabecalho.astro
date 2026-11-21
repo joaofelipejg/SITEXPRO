@@ -46,5 +46,10 @@ const atual = Astro.url.pathname;
     botao.setAttribute('aria-expanded', String(aberto));
   });
   document.querySelectorAll('.cab-nav a').forEach((a) => a.addEventListener('click', fechar));
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(); });
+  // Esc fecha o menu aberto e devolve o foco ao botão
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !document.body.classList.contains('menu-aberto')) return;
+    fechar();
+    botao?.focus();
+  });
 </script>

@@ -13,7 +13,17 @@ interface Props {
 
 const { largura = 1600, altura = 900, semente = 11, animar = false, class: classe = '' } = Astro.props;
 const curvas = gerarContornos({ largura, altura, semente, passo: 10, niveis: 34 });
+
+// Cotas: cada valor fica uma vez num SVG oculto (display: none) e é repetido com <use>. Assim os números
+// aparecem na tela, mas não entram no texto extraído da página (o SVG é só decorativo).
+const rotulos = curvas.filter((c) => c.rotulo);
+const valores = [...new Set(rotulos.map((c) => c.cota))];
+const idCota = (v: number) => `cota-${semente}-${v}`;
 ---
+{/* Modelos das cotas num SVG oculto (display: none): fora do texto extraído da página */}
+<svg class="contornos-modelos" style="display:none" aria-hidden="true" focusable="false">
+  {valores.map((v) => <text id={idCota(v)}>{v}</text>)}
+</svg>
 <svg
   class:list={['contornos', classe, { animar }]}
   viewBox={`0 0 ${largura} ${altura}`}
@@ -28,14 +38,15 @@ const curvas = gerarContornos({ largura, altura, semente, passo: 10, niveis: 34 
       style={`--n:${c.nivel}`}
     />
   ))}
-  {curvas.filter((c) => c.rotulo).map((c) => (
-    <text
+  {rotulos.map((c) => (
+    <use
+      href={`#${idCota(c.cota)}`}
       class="cota"
       x={c.rotulo!.x.toFixed(1)}
       y={c.rotulo!.y.toFixed(1)}
       transform={`rotate(${c.rotulo!.angulo.toFixed(1)} ${c.rotulo!.x.toFixed(1)} ${c.rotulo!.y.toFixed(1)})`}
       style={`--n:${c.nivel}`}
-    >{c.cota}</text>
+    />
   ))}
 </svg>
 {animar && (

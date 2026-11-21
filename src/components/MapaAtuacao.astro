@@ -39,35 +39,52 @@ const aneis = [50, 100];
 const raio = empresa.raioKm;
 const meridianos = [-46.5, -46, -45.5, -45, -44.5];
 const paralelos = [-20.5, -21, -21.5, -22, -22.5];
+
+// Resumo para leitor de tela (as duas versões do mapa)
+const resumo = `Mapa do Sul de Minas com a sede em ${empresa.endereco.cidade} e as cidades atendidas num raio usual de ${raio} km`;
+
+// Versão do celular (abaixo de 768px): recorte só com a sede e as cidades atendidas, sem graus
+// e sem as outras cidades. Desenhada na largura do celular (360 unidades), para os nomes
+// ficarem com no mínimo 12px na tela. O anel de 150 km não cabe no recorte: ficam 50 e 100 km.
+const cx = { oeste: -46.08, leste: -45.02, norte: -21.27, sul: -22.33 };
+const cLarg = 360;
+const cPxKm = cLarg / ((cx.leste - cx.oeste) * kmLon);
+const cAlt = Math.round((cx.norte - cx.sul) * kmLat * cPxKm);
+const cPx = (lon: number) => (lon - cx.oeste) * kmLon * cPxKm;
+const cPy = (lat: number) => (cx.norte - lat) * kmLat * cPxKm;
+const cSede = { x: cPx(empresa.coordenadas.lon), y: cPy(empresa.coordenadas.lat) };
+// lado do nome: dir (padrão), esq ou abaixo-esq (para não sair do recorte)
+const ladoCelular: Record<string, 'esq' | 'dir' | 'abaixo-esq'> = { 'Elói Mendes': 'esq', 'Três Corações': 'abaixo-esq' };
+const cidadesCelular = cidades.filter((c) => empresa.cidadesAtendidas.includes(c.nome));
 ---
 <figure>
-<svg class="mapa-svg" viewBox={`0 0 ${largura} ${altura}`} role="img" aria-labelledby="mapa-titulo mapa-desc">
+<svg class="mapa-svg mapa-completo" viewBox={`0 0 ${largura} ${altura}`} role="img" aria-label={resumo}>
   <title id="mapa-titulo">Mapa do Sul de Minas com Varginha ao centro</title>
   <desc id="mapa-desc">Raio usual de atendimento de {empresa.raioKm} km a partir de Varginha, com anéis de 50 e 100 km. Cidades atendidas: {empresa.cidadesAtendidas.join(', ')}.</desc>
 
   {meridianos.map((lon) => (
     <g>
       <line class="grade" x1={px(lon)} x2={px(lon)} y1="0" y2={altura} />
-      <text class="grade-rot" x={px(lon) + 4} y="14">{grausMinutos(lon, 'lon')}</text>
+      <text aria-hidden="true" class="grade-rot" x={px(lon) + 4} y="14">{grausMinutos(lon, 'lon')}</text>
     </g>
   ))}
   {paralelos.map((lat) => (
     <g>
       <line class="grade" x1="0" x2={largura} y1={py(lat)} y2={py(lat)} />
-      <text class="grade-rot" x="6" y={py(lat) - 5}>{grausMinutos(lat, 'lat')}</text>
+      <text aria-hidden="true" class="grade-rot" x="6" y={py(lat) - 5}>{grausMinutos(lat, 'lat')}</text>
     </g>
   ))}
 
   {aneis.map((km) => (
     <g>
       <circle class="anel" cx={sede.x} cy={sede.y} r={km * pxKm} />
-      <text class="anel-rot" x={sede.x + km * pxKm * 0.71 + 6} y={sede.y + km * pxKm * 0.71 + 12}>{km} km</text>
+      <text aria-hidden="true" class="anel-rot" x={sede.x + km * pxKm * 0.71 + 6} y={sede.y + km * pxKm * 0.71 + 12}>{km} km</text>
     </g>
   ))}
 
   <g>
     <circle class="anel-raio" cx={sede.x} cy={sede.y} r={raio * pxKm} />
-    <text class="anel-raio-rot" x={sede.x} y={sede.y - raio * pxKm + 18} text-anchor="middle">Raio usual de atendimento · {raio} km</text>
+    <text aria-hidden="true" class="anel-raio-rot" x={sede.x} y={sede.y - raio * pxKm + 18} text-anchor="middle">Raio usual de atendimento · {raio} km</text>
   </g>
 
   {cidades.map((c) => {
@@ -76,15 +93,37 @@ const paralelos = [-20.5, -21, -21.5, -22, -22.5];
     return (
       <g class:list={['cidade', { atendida: empresa.cidadesAtendidas.includes(c.nome) }]}>
         <circle cx={x} cy={y} r="3.5" />
-        <text x={esq ? x - 8 : x + 8} y={y + 4} text-anchor={esq ? 'end' : 'start'}>{c.nome}</text>
+        <text aria-hidden="true" x={esq ? x - 8 : x + 8} y={y + 4} text-anchor={esq ? 'end' : 'start'}>{c.nome}</text>
       </g>
     );
   })}
 
   <g class="sede">
     <circle cx={sede.x} cy={sede.y} r="7" />
-    <text x={sede.x + 12} y={sede.y + 5}>Varginha</text>
+    <text aria-hidden="true" x={sede.x + 12} y={sede.y + 5}>Varginha</text>
   </g>
 </svg>
-<figcaption class="legenda">● Cidades atendidas  ○ Outras cidades da região. Coordenadas aproximadas; norte para cima.</figcaption>
+<svg class="mapa-svg mapa-celular" viewBox={`0 0 ${cLarg} ${cAlt}`} role="img" aria-label={resumo}>
+  {aneis.map((km) => <circle class="anel" cx={cSede.x} cy={cSede.y} r={km * cPxKm} />)}
+  <text aria-hidden="true" class="anel-rot" x={cSede.x - 50 * cPxKm * 0.71 - 4} y={cSede.y + 50 * cPxKm * 0.71 + 14} text-anchor="end">50 km</text>
+  <text aria-hidden="true" class="anel-rot" x={cSede.x - Math.sqrt((100 * cPxKm) ** 2 - (cAlt - 14 - cSede.y) ** 2) + 6} y={cAlt - 10}>100 km</text>
+  {cidadesCelular.map((c) => {
+    const x = cPx(c.lon), y = cPy(c.lat);
+    const lado = ladoCelular[c.nome] ?? 'dir';
+    const tx = lado === 'dir' ? x + 9 : x - 9;
+    const ty = lado === 'abaixo-esq' ? y + 18 : y + 5;
+    return (
+      <g class="cidade atendida">
+        <circle cx={x} cy={y} r="4" />
+        <text aria-hidden="true" x={tx} y={ty} text-anchor={lado === 'dir' ? 'start' : 'end'}>{c.nome}</text>
+      </g>
+    );
+  })}
+  <g class="sede">
+    <circle cx={cSede.x} cy={cSede.y} r="7" />
+    <text aria-hidden="true" x={cSede.x + 12} y={cSede.y + 5}>{empresa.endereco.cidade}</text>
+  </g>
+</svg>
+<p class="legenda mapa-legenda-celular">● Cidades atendidas · anéis de 50 e 100 km a partir de {empresa.endereco.cidade}. Coordenadas aproximadas; norte para cima.</p>
+<figcaption class="legenda mapa-legenda-completa">● Cidades atendidas  ○ Outras cidades da região. Coordenadas aproximadas; norte para cima.</figcaption>
 </figure>
