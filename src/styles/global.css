@@ -780,3 +780,8 @@ mark.preencher { background: var(--preencher-fundo); color: var(--preencher-text
   /* Faixa da foto aérea de drone */
   .faixa-foto { height: 260px; }
 }
+
+/* Seção sem título: o rótulo é o h2 e mantém o visual de rótulo (Plex Mono) */
+h2.secao-rot { font-weight: 400; line-height: inherit; max-width: none; }
+.secao-cab-so-rotulo { margin-bottom: 16px; }
+.equip .secao-cab-so-rotulo { margin-bottom: 16px; }

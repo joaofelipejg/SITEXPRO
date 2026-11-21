@@ -1,17 +1,24 @@
 ---
 // Cabeçalho de seção no estilo de prancha: rótulo numerado + título + texto de apoio.
+// Sem "titulo": o próprio rótulo vira o h2 da seção (mesmo visual de rótulo em Plex Mono).
 interface Props {
   /** número da seção (01, 02...); sem número para blocos fora da sequência numerada */
   num?: string;
   rotulo: string;
-  titulo: string;
+  titulo?: string;
   id?: string;
 }
 
 const { num, rotulo, titulo, id } = Astro.props;
 ---
-<header class="secao-cab">
-  <p class="secao-rot">{num && <span>{num}</span>}{rotulo}</p>
-  <h2 id={id}>{titulo}</h2>
+<header class:list={['secao-cab', { 'secao-cab-so-rotulo': !titulo }]}>
+  {titulo ? (
+    <>
+      <p class="secao-rot">{num && <span>{num}</span>}{rotulo}</p>
+      <h2 id={id}>{titulo}</h2>
+    </>
+  ) : (
+    <h2 class="secao-rot" id={id}>{num && <span>{num}</span>}{rotulo}</h2>
+  )}
   {Astro.slots.has('default') && <div class="secao-apoio"><slot /></div>}
 </header>
